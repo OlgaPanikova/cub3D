@@ -6,7 +6,7 @@
 /*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:28:49 by lelichik          #+#    #+#             */
-/*   Updated: 2024/09/17 17:32:28 by lelichik         ###   ########.fr       */
+/*   Updated: 2024/09/17 18:37:49 by lelichik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,29 @@ int key_release_hook(int keycode, void *param)
     return 0;
 }
 
+void draw_floor_and_ceiling(RenderData *data)
+{
+    unsigned int *pixels = (unsigned int *)data->img_data;  // Указатель на массив пикселей
+    // int num_pixels = data->w * data->h;                     // Общее количество пикселей
+    int half_height = data->h / 2;                          // Половина высоты для разделения экрана на потолок и пол
+    unsigned int ceiling_color = 0x87CEEB;                  // Цвет потолка (можно задать любой)
+    unsigned int floor_color = 0x8B4513;                    // Цвет пола (можно задать любой)
+
+    // Отрисовка потолка (верхняя половина экрана)
+    for (int y = 0; y < half_height; ++y) {
+        for (int x = 0; x < data->w; ++x) {
+            pixels[y * data->w + x] = ceiling_color;
+        }
+    }
+
+    // Отрисовка пола (нижняя половина экрана)
+    for (int y = half_height; y < data->h; ++y) {
+        for (int x = 0; x < data->w; ++x) {
+            pixels[y * data->w + x] = floor_color;
+        }
+    }
+}
+
 int render(void *param)
 {
     RenderData *data = (RenderData *)param;
@@ -114,6 +137,7 @@ int render(void *param)
         pixels[i] = 0x000000; // Черный цвет
     }
 
+    draw_floor_and_ceiling(data);
     for (int x = 0; x < data->w; x++) {
             // Вычисление позиции и направления луча
             double cameraX = 2 * x / (double)data->w - 1;
