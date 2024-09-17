@@ -6,7 +6,7 @@
 /*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:28:49 by lelichik          #+#    #+#             */
-/*   Updated: 2024/09/16 20:57:33 by lelichik         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:32:28 by lelichik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,47 +46,56 @@ double absValue(double x)
     return (x < 0) ? -x : x;
 }
 
-unsigned int getTicks(void) {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return (tv.tv_sec * 1000) + (tv.tv_usec / 1000); // Возвращает время в миллисекундах
-}
-
-void verLine(int x, int drawStart, int drawEnd, ColorRGB color, void *mlx_ptr, void *win_ptr) {
-    for (int y = drawStart; y <= drawEnd; y++) {
-        // Например, отрисовка точки с помощью функции MiniLibX (или другой библиотеки)
-        mlx_pixel_put(mlx_ptr, win_ptr, x, y, (color.r << 16) | (color.g << 8) | color.b);
+void drawVerticalLine(int x, int drawStart, int drawEnd, ColorRGB color, RenderData *data)
+{
+    for (int y = drawStart; y <= drawEnd; y++)
+    {
+        if (y >= 0 && y < data->h && x >= 0 && x < data->w) {
+            int pixel_index = (y * data->size_line) + (x * (data->bpp / 8));
+            data->img_data[pixel_index] = color.b; // Blue
+            data->img_data[pixel_index + 1] = color.g; // Green
+            data->img_data[pixel_index + 2] = color.r; // Red
+        }
     }
 }
 
-KeyState keys = {0, 0, 0, 0}; // Инициализация состояния клавиш
+KeyState keys = {0, 0, 0, 0, 0 ,0}; // Инициализация состояния клавиш
 
-int key_hook(int keycode, void *param) {
+int key_hook(int keycode, void *param)
+{
     KeyState *keys = (KeyState *)param;
     
-    if (keycode == 126) { // Код для стрелки вверх
+    if (keycode == 13)
         keys->up = 1;
-    } else if (keycode == 125) { // Код для стрелки вниз
+    else if (keycode == 1)
         keys->down = 1;
-    } else if (keycode == 123) { // Код для стрелки влево
+    else if (keycode == 0)
         keys->left = 1;
-    } else if (keycode == 124) { // Код для стрелки вправо
+    else if (keycode == 2)
         keys->right = 1;
-    }
+     else if (keycode == 124)
+        keys->pov_left = 1;
+     else if (keycode == 123)
+        keys->pov_right = 1;
     return 0;
 }
 
-int key_release_hook(int keycode, void *param) {
+int key_release_hook(int keycode, void *param)
+{
     KeyState *keys = (KeyState *)param;
 
-    if (keycode == 126) 
+    if (keycode == 13)
         keys->up = 0;
-    if (keycode == 125)
+    if (keycode == 1)
         keys->down = 0;
-    if (keycode == 123)
+    if (keycode == 0)
         keys->left = 0;
-    if (keycode == 124)
+    if (keycode == 2)
         keys->right = 0;
+    if (keycode == 124)
+        keys->pov_left = 0;
+    if (keycode == 123)
+        keys->pov_right = 0;
     return 0;
 }
 
@@ -94,27 +103,25 @@ int render(void *param)
 {
     RenderData *data = (RenderData *)param;
     KeyState *keys = data->keys;
-       // Стартовые позиции и направления
-    double posX = 22, posY = 12;
-    double dirX = -1, dirY = 0;
-    double planeX = 0, planeY = 0.66;
 
-    // Переменные времени
-    double time = 0;
-    double oldTime = 0;
+    data->img = mlx_new_image(data->mlx_ptr, data->w, data->h);
+    data->img_data = mlx_get_data_addr(data->img, &data->bpp, &data->size_line, &data->endian);
 
-   // Ширина и высота экрана
-    int w = screenWidth;
-    int h = screenHeight;
+    // Шаг 2: Очистка изображения (фоновый цвет черный)
+    unsigned int *pixels = (unsigned int *)data->img_data;
+    int num_pixels = data->w * data->h;
+    for (int i = 0; i < num_pixels; i++) {
+        pixels[i] = 0x000000; // Черный цвет
+    }
 
-    for (int x = 0; x < w; x++) {
+    for (int x = 0; x < data->w; x++) {
             // Вычисление позиции и направления луча
-            double cameraX = 2 * x / (double)w - 1;
-            double rayDirX = dirX + planeX * cameraX;
-            double rayDirY = dirY + planeY * cameraX;
+            double cameraX = 2 * x / (double)data->w - 1;
+            double rayDirX = data->dirX + data->planeX * cameraX;
+            double rayDirY = data->dirY + data->planeY * cameraX;
 
-            int mapX = (int)posX;
-            int mapY = (int)posY;
+            int mapX = (int)data->posX;
+            int mapY = (int)data->posY;
 
             double sideDistX;
             double sideDistY;
@@ -128,18 +135,18 @@ int render(void *param)
             // Расчет шага и начальных значений sideDist
             if (rayDirX < 0) {
                 stepX = -1;
-                sideDistX = (posX - mapX) * deltaDistX;
+                sideDistX = (data->posX - mapX) * deltaDistX;
             } else {
                 stepX = 1;
-                sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+                sideDistX = (mapX + 1.0 - data->posX) * deltaDistX;
             }
 
             if (rayDirY < 0) {
                 stepY = -1;
-                sideDistY = (posY - mapY) * deltaDistY;
+                sideDistY = (data->posY - mapY) * deltaDistY;
             } else {
                 stepY = 1;
-                sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+                sideDistY = (mapY + 1.0 - data->posY) * deltaDistY;
             }
 
             // Обработка столкновений
@@ -153,19 +160,21 @@ int render(void *param)
                     mapY += stepY;
                     side = 1;
                 }
-                if (worldMap[mapX][mapY] > 0) hit = 1;
+                if (mapX >= 0 && mapX < data->w && mapY >= 0 && mapY < data->h) {
+                    if (worldMap[mapX][mapY] > 0) hit = 1;
+                }
             }
 
             if (side == 0)
-                perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
+                perpWallDist = (mapX - data->posX + (1 - stepX) / 2) / rayDirX;
             else
-                perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
+                perpWallDist = (mapY - data->posY + (1 - stepY) / 2) / rayDirY;
 
-            int lineHeight = (int)(h / perpWallDist);
-            int drawStart = -lineHeight / 2 + h / 2;
+            int lineHeight = (int)(data->h / perpWallDist);
+            int drawStart = -lineHeight / 2 + data->h / 2;
             if (drawStart < 0) drawStart = 0;
-            int drawEnd = lineHeight / 2 + h / 2;
-            if (drawEnd >= h) drawEnd = h - 1;
+            int drawEnd = lineHeight / 2 + data->h / 2;
+            if (drawEnd >= data->h) drawEnd = data->h - 1;
 
             ColorRGB color;
             switch (worldMap[mapX][mapY]) {
@@ -182,59 +191,99 @@ int render(void *param)
                 color.b /= 2;
             }
 
-            verLine(x, drawStart, drawEnd, color, data->mlx_ptr, data->win_ptr);
+            drawVerticalLine(x, drawStart, drawEnd, color, data);
         }
 
-        // Подсчет времени кадра
-        oldTime = time;
-        time = getTicks();
-        double frameTime = (time - oldTime) / 1000.0;
-
-        // Счетчик FPS
-        // printf("%f\n", 1.0 / frameTime);
-
-
-        double moveSpeed = frameTime * 5.0;
-        double rotSpeed = frameTime * 3.0;
-
-
-        // Движение вперёд
-
-         if (keys->up)
+       // Движение вперёд
+        if (keys->up)
         {
-            if (worldMap[(int)(posX + dirX * moveSpeed)][(int)posY] == 0) posX += dirX * moveSpeed;
-            if (worldMap[(int)posX][(int)(posY + dirY * moveSpeed)] == 0) posY += dirY * moveSpeed;
+            double newX = data->posX + data->dirX * data->moveSpeed;
+            double newY = data->posY + data->dirY * data->moveSpeed;
+
+    // Проверка для движения вперед
+            if (newX >= 0 && newX < 24 && (int)data->posY >= 0 && (int)data->posY < 24 && worldMap[(int)newX][(int)newY] == 0)
+            {
+                data->posX = newX;
+            }
+            if ((int)data->posX >= 0 && (int)data->posX < 24 && newY >= 0 && newY < 24 && worldMap[(int)newX][(int)newY] == 0)
+            {
+                data->posX = newX;
+            }
         }
 
         if (keys->down)
         {
-            if (worldMap[(int)(posX - dirX * moveSpeed)][(int)posY] == 0) posX -= dirX * moveSpeed;
-            if (worldMap[(int)posX][(int)(posY - dirY * moveSpeed)] == 0) posY -= dirY * moveSpeed;
+            double newX = data->posX - data->dirX * data->moveSpeed;
+            double newY = data->posY - data->dirY * data->moveSpeed;
+
+    // Проверка для движения назад
+            if (newX >= 0 && newX < 24 && (int)data->posY >= 0 && (int)data->posY < 24 && worldMap[(int)newX][(int)newY] == 0)
+            {
+                data->posX = newX;
+            }
+            if ((int)data->posX >= 0 && (int)data->posX < 24 && newY >= 0 && newY < 24 && worldMap[(int)newX][(int)newY] == 0)
+            {
+                data->posX = newX;
+            }
         }
 
-        // Поворот вправо
-         if (keys->right)
-         {
-            double oldDirX = dirX;
-            dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-            dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
-    
-            double oldPlaneX = planeX;
-            planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-            planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+        if (keys->right)
+        {
+    // Рассчитываем новые координаты, перемещая игрока вправо
+            double newX = data->posX + data->dirY * data->moveSpeed;
+            double newY = data->posY - data->dirX * data->moveSpeed;
+
+    // Проверка для перемещения вправо
+            if (newX >= 0 && newX < 24 && newY >= 0 && newY < 24 && worldMap[(int)newX][(int)newY] == 0)
+            {
+                data->posX = newX;
+                data->posY = newY;
+            }
         }
 
-// Поворот влево
+// Перемещение влево
         if (keys->left)
         {
-            double oldDirX = dirX;
-            dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-            dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
-    
-            double oldPlaneX = planeX;
-            planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-            planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+    // Рассчитываем новые координаты, перемещая игрока влево
+            double newX = data->posX - data->dirY * data->moveSpeed;
+            double newY = data->posY + data->dirX * data->moveSpeed;
+
+    // Проверка для перемещения влево
+            if (newX >= 0 && newX < 24 && newY >= 0 && newY < 24 && worldMap[(int)newX][(int)newY] == 0)
+            {
+                data->posX = newX;
+                data->posY = newY;
+            }
         }
+        
+    //     if (keys->pov_right)
+    //     {
+    //         double oldDirX = data->dirX;
+    //         double oldPlaneX = data->planeX;
+
+    //         // Поворот вправо
+    //         data->dirX = data->dirY;
+    //         data->dirY = -oldDirX;
+    //         data->planeX = data->planeY;
+    //         data->planeY = -oldPlaneX;
+    //     }
+        
+    //     if (keys->pov_left)
+    //     {
+    //         double oldDirX = data->dirX;
+    //         double oldPlaneX = data->planeX;
+
+    // // Поворот влево
+    //         data->dirX = -data->dirY;
+    //         data->dirY = oldDirX;
+    //         data->planeX = -data->planeY;
+    //         data->planeY = oldPlaneX;
+    //     }
+
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img, 0, 0);
+
+    // Шаг 6: Очистка ресурсов
+        // mlx_destroy_image(data->mlx_ptr, data->img);
     return 0;
 }
 
@@ -243,32 +292,18 @@ int main(int argc, char **argv)
     (void)argc;
     (void)argv;
 
-
-    // Стартовые позиции и направления
-    // double posX = 22, posY = 12;
-    // double dirX = -1, dirY = 0;
-    // double planeX = 0, planeY = 0.66;
-
-    // // Переменные времени
-    // double time = 0;
-    // double oldTime = 0;
-
-    // Ширина и высота экрана
-    // int screenWidth = 640;
-    // int screenHeight = 480;
-    // int w = screenWidth;
-    // int h = screenHeight;
-
     // Инициализация MiniLibX
     void *mlx_ptr = mlx_init();
-    if (!mlx_ptr) {
+    if (!mlx_ptr)
+    {
         printf("Ошибка: не удалось инициализировать MiniLibX\n");
         return 1;
     }
 
     // Создание окна
     void *win_ptr = mlx_new_window(mlx_ptr, screenWidth, screenHeight, "Raycaster");
-    if (!win_ptr) {
+    if (!win_ptr)
+    {
         printf("Ошибка: не удалось создать окно\n");
         return 1;
     }
@@ -280,144 +315,19 @@ int main(int argc, char **argv)
     data.mlx_ptr = mlx_ptr;
     data.win_ptr = win_ptr;
     data.keys = &keys;
-    // data.posX = 22;
-    // data.posY = 12;
-    // data.dirX = -1;
-    // data.dirY = 0;
-    // data.planeX = 0;
-    // data.planeY = 0.66;
-    // data.w = screenWidth;
-    // data.h = screenHeight;
+    data.posX = 22;
+    data.posY = 12;
+    data.dirX = -1;
+    data.dirY = 0;
+    data.planeX = 0;
+    data.planeY = 0.66;
+    data.w = screenWidth;
+    data.h = screenHeight;
+    data.moveSpeed = MOVE_SPEED;
+    data.rotSpeed = ROT_SPEED;
+    
     mlx_hook(win_ptr, 2, 1L << 0, key_hook, &keys);
-    mlx_hook(win_ptr, 17, 1L << 0, key_release_hook, &keys);
+    mlx_hook(win_ptr, 3, 1L << 1, key_release_hook, &keys);
     mlx_loop_hook(mlx_ptr, render, &data);
-    
-//     while (1) {
-//         for (int x = 0; x < w; x++) {
-//             // Вычисление позиции и направления луча
-//             double cameraX = 2 * x / (double)w - 1;
-//             double rayDirX = dirX + planeX * cameraX;
-//             double rayDirY = dirY + planeY * cameraX;
-
-//             int mapX = (int)posX;
-//             int mapY = (int)posY;
-
-//             double sideDistX;
-//             double sideDistY;
-
-//             double deltaDistX = (rayDirX == 0) ? 1e30 : absValue(1 / rayDirX);
-//             double deltaDistY = (rayDirY == 0) ? 1e30 : absValue(1 / rayDirY);
-
-//             double perpWallDist;
-//             int stepX, stepY, hit = 0, side;
-
-//             // Расчет шага и начальных значений sideDist
-//             if (rayDirX < 0) {
-//                 stepX = -1;
-//                 sideDistX = (posX - mapX) * deltaDistX;
-//             } else {
-//                 stepX = 1;
-//                 sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-//             }
-
-//             if (rayDirY < 0) {
-//                 stepY = -1;
-//                 sideDistY = (posY - mapY) * deltaDistY;
-//             } else {
-//                 stepY = 1;
-//                 sideDistY = (mapY + 1.0 - posY) * deltaDistY;
-//             }
-
-//             // Обработка столкновений
-//             while (hit == 0) {
-//                 if (sideDistX < sideDistY) {
-//                     sideDistX += deltaDistX;
-//                     mapX += stepX;
-//                     side = 0;
-//                 } else {
-//                     sideDistY += deltaDistY;
-//                     mapY += stepY;
-//                     side = 1;
-//                 }
-//                 if (worldMap[mapX][mapY] > 0) hit = 1;
-//             }
-
-//             if (side == 0)
-//                 perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
-//             else
-//                 perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
-
-//             int lineHeight = (int)(h / perpWallDist);
-//             int drawStart = -lineHeight / 2 + h / 2;
-//             if (drawStart < 0) drawStart = 0;
-//             int drawEnd = lineHeight / 2 + h / 2;
-//             if (drawEnd >= h) drawEnd = h - 1;
-
-//             ColorRGB color;
-//             switch (worldMap[mapX][mapY]) {
-//                 case 1:  color = (ColorRGB){255, 0, 0};    break; // красный
-//                 case 2:  color = (ColorRGB){0, 255, 0};    break; // зелёный
-//                 case 3:  color = (ColorRGB){0, 0, 255};    break; // синий
-//                 case 4:  color = (ColorRGB){255, 255, 255}; break; // белый
-//                 default: color = (ColorRGB){255, 255, 0};   break; // жёлтый
-//             }
-
-//             if (side == 1) {
-//                 color.r /= 2;
-//                 color.g /= 2;
-//                 color.b /= 2;
-//             }
-
-//             verLine(x, drawStart, drawEnd, color, mlx_ptr, win_ptr);
-//         }
-
-//         // Подсчет времени кадра
-//         oldTime = time;
-//         time = getTicks();
-//         double frameTime = (time - oldTime) / 1000.0;
-
-//         // Счетчик FPS
-//         // printf("%f\n", 1.0 / frameTime);
-
-
-//         double moveSpeed = frameTime * 5.0;
-//         double rotSpeed = frameTime * 3.0;
-
-
-//         // Движение вперёд
-
-//          if (keys.up) {
-//             if (worldMap[(int)(posX + dirX * moveSpeed)][(int)posY] == 0) posX += dirX * moveSpeed;
-//             if (worldMap[(int)posX][(int)(posY + dirY * moveSpeed)] == 0) posY += dirY * moveSpeed;
-//         }
-
-//         if (keys.down) {
-//             if (worldMap[(int)(posX - dirX * moveSpeed)][(int)posY] == 0) posX -= dirX * moveSpeed;
-//             if (worldMap[(int)posX][(int)(posY - dirY * moveSpeed)] == 0) posY -= dirY * moveSpeed;
-//         }
-
-//         // Поворот вправо
-//          if (keys.right) {
-//             double oldDirX = dirX;
-//             dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-//             dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
-    
-//             double oldPlaneX = planeX;
-//             planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-//             planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
-//         }
-
-// // Поворот влево
-//         if (keys.left) {
-//             double oldDirX = dirX;
-//             dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-//             dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
-    
-//             double oldPlaneX = planeX;
-//             planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-//             planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
-//         }
-//     }
-
-        mlx_loop(mlx_ptr);
+    mlx_loop(mlx_ptr);
 }
