@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:28:49 by lelichik          #+#    #+#             */
-/*   Updated: 2024/09/17 18:37:49 by lelichik         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:58:02 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ double absValue(double x)
     return (x < 0) ? -x : x;
 }
 
-void drawVerticalLine(int x, int drawStart, int drawEnd, ColorRGB color, RenderData *data)
+void drawVerticalLine(int x, int drawStart, int drawEnd, ColorRGB color, t_data *data)
 {
     for (int y = drawStart; y <= drawEnd; y++)
     {
@@ -58,12 +58,9 @@ void drawVerticalLine(int x, int drawStart, int drawEnd, ColorRGB color, RenderD
         }
     }
 }
-
-KeyState keys = {0, 0, 0, 0, 0 ,0}; // Инициализация состояния клавиш
-
 int key_hook(int keycode, void *param)
 {
-    KeyState *keys = (KeyState *)param;
+    t_KeyState *keys = (t_KeyState *)param;
     
     if (keycode == 13)
         keys->up = 1;
@@ -82,7 +79,7 @@ int key_hook(int keycode, void *param)
 
 int key_release_hook(int keycode, void *param)
 {
-    KeyState *keys = (KeyState *)param;
+    t_KeyState *keys = (t_KeyState *)param;
 
     if (keycode == 13)
         keys->up = 0;
@@ -99,7 +96,7 @@ int key_release_hook(int keycode, void *param)
     return 0;
 }
 
-void draw_floor_and_ceiling(RenderData *data)
+void draw_floor_and_ceiling(t_data *data)
 {
     unsigned int *pixels = (unsigned int *)data->img_data;  // Указатель на массив пикселей
     // int num_pixels = data->w * data->h;                     // Общее количество пикселей
@@ -108,37 +105,81 @@ void draw_floor_and_ceiling(RenderData *data)
     unsigned int floor_color = 0x8B4513;                    // Цвет пола (можно задать любой)
 
     // Отрисовка потолка (верхняя половина экрана)
-    for (int y = 0; y < half_height; ++y) {
-        for (int x = 0; x < data->w; ++x) {
+    int y = 0;
+    while (y < half_height)
+    {
+        int x = 0;
+        while (x < data->w) 
+        {
             pixels[y * data->w + x] = ceiling_color;
+            x++;
         }
+        y++;
     }
 
     // Отрисовка пола (нижняя половина экрана)
-    for (int y = half_height; y < data->h; ++y) {
-        for (int x = 0; x < data->w; ++x) {
-            pixels[y * data->w + x] = floor_color;
+    int i = half_height;
+    while (i < data->h)
+    {
+        int x = 0;
+        while (x < data->w)
+        {
+            pixels[i * data->w + x] = floor_color;
+            x++;
         }
+        i++;
     }
+}
+
+void *file_to_image(t_data *data, char *textures_path)
+{
+    int img_w;
+    int img_h;
+    void *img;
+
+    img = mlx_xpm_file_to_image(data->mlx_ptr, textures_path, &img_w, &img_h);
+    if (!img)
+    {
+        fprintf(stderr, "Ошибка загрузки изображения: %s\n", textures_path);
+        exit(EXIT_FAILURE); // Выход из программы при ошибке
+    }
+    return img;
+}
+
+void init_sprite(t_data *data)
+{
+    for (int i = 0; i < 1; ++i)
+    {
+        data->textures[i] = file_to_image(data, data->textures_path[i]);
+    }
+}
+
+void init_sprite_path(t_data *data)
+{
+    data->textures_path[0] = "./1.xpm";
 }
 
 int render(void *param)
 {
-    RenderData *data = (RenderData *)param;
-    KeyState *keys = data->keys;
+    t_data *data = (t_data *)param;
+    t_KeyState *keys = data->keys;
+
 
     data->img = mlx_new_image(data->mlx_ptr, data->w, data->h);
-    data->img_data = mlx_get_data_addr(data->img, &data->bpp, &data->size_line, &data->endian);
+    data->img_data = (int *)mlx_get_data_addr(data->img, &data->bpp, &data->size_line, &data->endian);
 
-    // Шаг 2: Очистка изображения (фоновый цвет черный)
+    //Шаг 2: Очистка изображения (фоновый цвет черный)
     unsigned int *pixels = (unsigned int *)data->img_data;
     int num_pixels = data->w * data->h;
     for (int i = 0; i < num_pixels; i++) {
         pixels[i] = 0x000000; // Черный цвет
     }
 
+    
+
     draw_floor_and_ceiling(data);
-    for (int x = 0; x < data->w; x++) {
+    for (int x = 0; x < data->w; x++)
+    {
             // Вычисление позиции и направления луча
             double cameraX = 2 * x / (double)data->w - 1;
             double rayDirX = data->dirX + data->planeX * cameraX;
@@ -189,35 +230,61 @@ int render(void *param)
                 }
             }
 
-            if (side == 0)
-                perpWallDist = (mapX - data->posX + (1 - stepX) / 2) / rayDirX;
-            else
-                perpWallDist = (mapY - data->posY + (1 - stepY) / 2) / rayDirY;
 
-            int lineHeight = (int)(data->h / perpWallDist);
-            int drawStart = -lineHeight / 2 + data->h / 2;
-            if (drawStart < 0) drawStart = 0;
-            int drawEnd = lineHeight / 2 + data->h / 2;
-            if (drawEnd >= data->h) drawEnd = data->h - 1;
-
-            ColorRGB color;
-            switch (worldMap[mapX][mapY]) {
-                case 1:  color = (ColorRGB){255, 0, 0};    break; // красный
-                case 2:  color = (ColorRGB){0, 255, 0};    break; // зелёный
-                case 3:  color = (ColorRGB){0, 0, 255};    break; // синий
-                case 4:  color = (ColorRGB){255, 255, 255}; break; // белый
-                default: color = (ColorRGB){255, 255, 0};   break; // жёлтый
-            }
-
-            if (side == 1) {
-                color.r /= 2;
-                color.g /= 2;
-                color.b /= 2;
-            }
-
-            drawVerticalLine(x, drawStart, drawEnd, color, data);
+           if (side == 0) {
+            perpWallDist = (mapX - data->posX + (1 - stepX) / 2) / rayDirX;
+        } else {
+            perpWallDist = (mapY - data->posY + (1 - stepY) / 2) / rayDirY;
         }
 
+        // Высота линии для отрисовки
+        int lineHeight = (int)(data->h / perpWallDist);
+
+        // Определение начальной и конечной точки отрисовки
+        int drawStart = -lineHeight / 2 + data->h / 2;
+        if (drawStart < 0) drawStart = 0;
+        int drawEnd = lineHeight / 2 + data->h / 2;
+        if (drawEnd >= data->h) drawEnd = data->h - 1;
+
+        // Выбор текстуры
+        // int texNum = worldMap[mapX][mapY] - 1; // Подразумевается, что текстуры начинаются с 1
+
+        // Получение данных пикселей текстуры
+        int *texture_data = (int *)mlx_get_data_addr(data->textures[0], &data->bpp, &data->size_line, &data->endian);
+
+        // Вычисление координат текстуры
+        double wallX;
+        if (side == 0) {
+            wallX = data->posY + perpWallDist * rayDirY;
+        } else {
+            wallX = data->posX + perpWallDist * rayDirX;
+        }
+        wallX -= floor(wallX);
+
+        int texX = (int)(wallX * texWidth);
+        if (side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
+        if (side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
+
+        // Вычисление шага и начальной текстурной координаты
+        double step = 1.0 * texHeight / lineHeight;
+        double texPos = (drawStart - data->h / 2 + lineHeight / 2) * step;
+
+        for (int y = drawStart; y < drawEnd; y++)
+        {
+            int texY = (int)texPos & (texHeight - 1); // Применение маски, чтобы избежать переполнения
+            texPos += step;
+
+            // Получение цвета из текстуры
+            unsigned int color = texture_data[texHeight * texY + texX];
+            if (side == 1)
+            {
+                color = (color >> 1) & 0x7F7F7F; // Затемнение для боковых стен
+            }
+
+            // Отрисовка вертикальной линии
+            data->img_data[y * data->w + x] = color;
+        }
+    }
        // Движение вперёд
         if (keys->up)
         {
@@ -280,42 +347,66 @@ int render(void *param)
             }
         }
         
-    //     if (keys->pov_right)
-    //     {
-    //         double oldDirX = data->dirX;
-    //         double oldPlaneX = data->planeX;
 
-    //         // Поворот вправо
-    //         data->dirX = data->dirY;
-    //         data->dirY = -oldDirX;
-    //         data->planeX = data->planeY;
-    //         data->planeY = -oldPlaneX;
-    //     }
-        
-    //     if (keys->pov_left)
-    //     {
-    //         double oldDirX = data->dirX;
-    //         double oldPlaneX = data->planeX;
+        if (keys->pov_left)
+        {
+            double oldDirX = data->dirX;
 
-    // // Поворот влево
-    //         data->dirX = -data->dirY;
-    //         data->dirY = oldDirX;
-    //         data->planeX = -data->planeY;
-    //         data->planeY = oldPlaneX;
-    //     }
+    // Поворот направления камеры
+            data->dirX = data->dirX * COS_ROT - data->dirY * (-SIN_ROT);
+            data->dirY = oldDirX * (-SIN_ROT) + data->dirY * COS_ROT;
+
+    // Поворот плоскости экрана
+            double oldPlaneX = data->planeX;
+            data->planeX = data->planeX * COS_ROT - data->planeY * (-SIN_ROT);
+            data->planeY = oldPlaneX * (-SIN_ROT) + data->planeY * COS_ROT;
+        }
+
+        if (keys->pov_right)
+        {
+            double oldDirX = data->dirX;
+
+    // Поворот направления камеры
+            data->dirX = data->dirX * COS_ROT - data->dirY * SIN_ROT;
+            data->dirY = oldDirX * SIN_ROT + data->dirY * COS_ROT;
+
+    // Поворот плоскости экрана
+            double oldPlaneX = data->planeX;
+            data->planeX = data->planeX * COS_ROT - data->planeY * SIN_ROT;
+            data->planeY = oldPlaneX * SIN_ROT + data->planeY * COS_ROT;
+        }
 
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img, 0, 0);
 
     // Шаг 6: Очистка ресурсов
-        // mlx_destroy_image(data->mlx_ptr, data->img);
+        mlx_destroy_image(data->mlx_ptr, data->img);
     return 0;
 }
+
 
 int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
 
+    t_data *data;
+    t_KeyState keys;
+
+    keys.up = 0;
+    keys.down = 0;
+    keys.right = 0;
+    keys.left = 0;
+    keys.pov_left = 0;
+    keys.pov_right = 0;
+
+    data = malloc(sizeof(t_data));
+    
+    if(!data)
+    {
+        printf("Ошибка: не удалось выделить память\n");
+        return (1);
+    }
+    
     // Инициализация MiniLibX
     void *mlx_ptr = mlx_init();
     if (!mlx_ptr)
@@ -335,23 +426,25 @@ int main(int argc, char **argv)
     printf("Raycaster screen: %dx%d\n", screenWidth, screenHeight);
 
 
-    RenderData data;
-    data.mlx_ptr = mlx_ptr;
-    data.win_ptr = win_ptr;
-    data.keys = &keys;
-    data.posX = 22;
-    data.posY = 12;
-    data.dirX = -1;
-    data.dirY = 0;
-    data.planeX = 0;
-    data.planeY = 0.66;
-    data.w = screenWidth;
-    data.h = screenHeight;
-    data.moveSpeed = MOVE_SPEED;
-    data.rotSpeed = ROT_SPEED;
+    data->mlx_ptr = mlx_ptr;
+    data->win_ptr = win_ptr;
+    data->keys = &keys;
+    data->posX = 22;
+    data->posY = 11.5;
+    data->dirX = -1;
+    data->dirY = 0;
+    data->planeX = 0;
+    data->planeY = 0.66;
+    data->w = screenWidth;
+    data->h = screenHeight;
+    data->moveSpeed = MOVE_SPEED;
+    data->rotSpeed = ROT_SPEED;
+
+    init_sprite_path(data);
+	init_sprite(data);
     
     mlx_hook(win_ptr, 2, 1L << 0, key_hook, &keys);
     mlx_hook(win_ptr, 3, 1L << 1, key_release_hook, &keys);
-    mlx_loop_hook(mlx_ptr, render, &data);
+    mlx_loop_hook(mlx_ptr, render, data);
     mlx_loop(mlx_ptr);
 }

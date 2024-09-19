@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:54:14 by lelichik          #+#    #+#             */
-/*   Updated: 2024/09/17 17:19:19 by lelichik         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:58:11 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,33 @@
 # define MOVE_SPEED 0.1
 #define ROT_SPEED 0.05
 
+#define COS_ROT 0.996
+#define SIN_ROT 0.087
+
+#define texWidth 80
+#define texHeight 80
+
 typedef struct {
     int r;
     int g;
     int b;
 } ColorRGB;
 
-typedef struct {
+typedef struct s_key
+{
     int up;
     int down;
     int right;
     int left;
     int pov_left;
     int pov_right;
-} KeyState;
+} t_KeyState;
 
-typedef struct {
+typedef struct s_data
+{
     void *mlx_ptr;
     void *win_ptr;
-	KeyState *keys;
+	t_KeyState *keys;
     double posX;
     double posY;
     double dirX;
@@ -58,7 +66,9 @@ typedef struct {
     int size_line;
     int endian;
     void *img;
-    char *img_data;
-} RenderData;
+    int *img_data;
+    void *textures[1];   // Массив указателей на изображения
+    char *textures_path[10]; // Массив путей к изображениям
+} t_data;
 
 #endif
