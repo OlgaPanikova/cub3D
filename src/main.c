@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:28:49 by lelichik          #+#    #+#             */
-/*   Updated: 2024/09/19 17:58:02 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/21 18:24:34 by lelichik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,18 @@ double absValue(double x)
     return (x < 0) ? -x : x;
 }
 
-void drawVerticalLine(int x, int drawStart, int drawEnd, ColorRGB color, t_data *data)
-{
-    for (int y = drawStart; y <= drawEnd; y++)
-    {
-        if (y >= 0 && y < data->h && x >= 0 && x < data->w) {
-            int pixel_index = (y * data->size_line) + (x * (data->bpp / 8));
-            data->img_data[pixel_index] = color.b; // Blue
-            data->img_data[pixel_index + 1] = color.g; // Green
-            data->img_data[pixel_index + 2] = color.r; // Red
-        }
-    }
-}
+// void drawVerticalLine(int x, int drawStart, int drawEnd, ColorRGB color, t_data *data)
+// {
+//     for (int y = drawStart; y <= drawEnd; y++)
+//     {
+//         if (y >= 0 && y < data->h && x >= 0 && x < data->w) {
+//             int pixel_index = (y * data->size_line) + (x * (data->bpp / 8));
+//             data->img_data[pixel_index] = color.b; // Blue
+//             data->img_data[pixel_index + 1] = color.g; // Green
+//             data->img_data[pixel_index + 2] = color.r; // Red
+//         }
+//     }
+// }
 int key_hook(int keycode, void *param)
 {
     t_KeyState *keys = (t_KeyState *)param;
@@ -159,25 +159,35 @@ void init_sprite_path(t_data *data)
     data->textures_path[0] = "./1.xpm";
 }
 
+void clear_image(t_data *data)
+{
+    unsigned int    *pixels;
+    int num_pixels;
+    int i;
+
+    i = 0;
+    
+    data->img = mlx_new_image(data->mlx_ptr, data->w, data->h);
+    data->img_data = (int *)mlx_get_data_addr(data->img, &data->bpp, &data->size_line, &data->endian);
+
+    //Шаг 2: Очистка изображения (фоновый цвет черный)
+    pixels = (unsigned int *)data->img_data;
+    num_pixels = data->w * data->h;
+    while (i < num_pixels)
+    {
+        pixels[i] = 0x000000; // Черный цвет
+        i++;
+    }
+}
+
 int render(void *param)
 {
     t_data *data = (t_data *)param;
     t_KeyState *keys = data->keys;
 
-
-    data->img = mlx_new_image(data->mlx_ptr, data->w, data->h);
-    data->img_data = (int *)mlx_get_data_addr(data->img, &data->bpp, &data->size_line, &data->endian);
-
-    //Шаг 2: Очистка изображения (фоновый цвет черный)
-    unsigned int *pixels = (unsigned int *)data->img_data;
-    int num_pixels = data->w * data->h;
-    for (int i = 0; i < num_pixels; i++) {
-        pixels[i] = 0x000000; // Черный цвет
-    }
-
-    
-
+    clear_image(data);
     draw_floor_and_ceiling(data);
+    
     for (int x = 0; x < data->w; x++)
     {
             // Вычисление позиции и направления луча
