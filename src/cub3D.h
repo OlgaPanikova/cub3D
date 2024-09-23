@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:54:14 by lelichik          #+#    #+#             */
-/*   Updated: 2024/09/19 17:58:11 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/23 21:01:51 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
 # define screenHeight 680
 
 # define MOVE_SPEED 0.1
-#define ROT_SPEED 0.05
+# define ROT_SPEED 0.05
 
 #define COS_ROT 0.996
 #define SIN_ROT 0.087
 
-#define texWidth 80
-#define texHeight 80
+#define texWidth 100
+#define texHeight 100
 
 typedef struct {
     int r;
@@ -45,13 +45,11 @@ typedef struct s_key
     int left;
     int pov_left;
     int pov_right;
+    struct s_data *data;
 } t_KeyState;
 
-typedef struct s_data
+typedef struct s_player
 {
-    void *mlx_ptr;
-    void *win_ptr;
-	t_KeyState *keys;
     double posX;
     double posY;
     double dirX;
@@ -60,6 +58,33 @@ typedef struct s_data
     double planeY;
     double moveSpeed;
     double rotSpeed;
+    double newX;
+    double newY;
+} t_player;
+
+typedef struct s_ray
+{
+    double rayDirX;
+    double rayDirY;
+    double deltaDistX;
+    double deltaDistY;
+    double sideDistX;
+    double sideDistY;
+    int mapX;
+    int mapY;
+    int stepX;
+    int stepY;
+    int side;
+    double perpWallDist;
+} t_ray;
+
+typedef struct s_data
+{
+    void *mlx_ptr;
+    void *win_ptr;
+    t_KeyState *keys;
+    t_player player;
+    t_ray ray;
     int w;
     int h;
     int bpp;
@@ -67,8 +92,9 @@ typedef struct s_data
     int endian;
     void *img;
     int *img_data;
-    void *textures[1];   // Массив указателей на изображения
-    char *textures_path[10]; // Массив путей к изображениям
+    void *textures[4];
+    char *textures_path[4];
 } t_data;
+
 
 #endif
