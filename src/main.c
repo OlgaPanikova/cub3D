@@ -6,44 +6,47 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:28:49 by lelichik          #+#    #+#             */
-/*   Updated: 2024/09/23 21:18:13 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:50:43 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include <math.h>
 
-int worldMap[24][24]=
+int worldMap[24][29]=
 {
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1},
+  {1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
+  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1},
+  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
 double absValue(double x)
 {
-    return (x < 0) ? -x : x;
+    if (x < 0)
+        return -x;
+    else
+        return x;
 }
 int key_hook(int keycode, void *param)
 {
@@ -263,11 +266,10 @@ void draw_wall(t_data *data, int x, int drawStart, int drawEnd, double wallX, in
         if (data->ray.rayDirX > 0) // Восточная стена (EA)
         {
             texX = texWidth - texX - 1;
-            texture_data = (int *)mlx_get_data_addr(data->textures[3], &data->bpp, &data->size_line, &data->endian);
+            texture_data = (int *)mlx_get_data_addr(data->textures[0], &data->bpp, &data->size_line, &data->endian);
         }
         else if (data->ray.rayDirX < 0)
         {
-            texX = texWidth - texX - 1;
             texture_data = (int *)mlx_get_data_addr(data->textures[2], &data->bpp, &data->size_line, &data->endian);
         }
     }
@@ -275,8 +277,7 @@ void draw_wall(t_data *data, int x, int drawStart, int drawEnd, double wallX, in
     {
         if (data->ray.rayDirY > 0) // Северная стена (NO)
         {
-            texX = texWidth - texX - 1;
-            texture_data = (int *)mlx_get_data_addr(data->textures[0], &data->bpp, &data->size_line, &data->endian);
+            texture_data = (int *)mlx_get_data_addr(data->textures[3], &data->bpp, &data->size_line, &data->endian);
         }
         else if (data->ray.rayDirY < 0)
         {
@@ -302,88 +303,55 @@ void draw_wall(t_data *data, int x, int drawStart, int drawEnd, double wallX, in
 }
 
 
-// void draw_wall(t_data *data, int x, int drawStart, int drawEnd, double wallX, int *texture_data, int lineHeight)
-// {
-//     int texX = (int)(wallX * texWidth);
-
-//     if (data->ray.side == 0)  // Столкновение с вертикальной стеной
-//     {
-//         if (data->ray.rayDirX > 0) // Восточная стена (EA)
-//         {
-//             texX = texWidth - texX - 1;
-//             texture_data = (int *)mlx_get_data_addr(data->textures[3], &data->bpp, &data->size_line, &data->endian);
-//         }
-//         else // Западная стена (WE)
-//             texture_data = (int *)mlx_get_data_addr(data->textures[2], &data->bpp, &data->size_line, &data->endian);
-//     }
-//     else  // Столкновение с горизонтальной стеной
-//     {
-//         if (data->ray.rayDirY > 0) // Северная стена (NO)
-//         {
-//             texX = texWidth - texX - 1;
-//             texture_data = (int *)mlx_get_data_addr(data->textures[0], &data->bpp, &data->size_line, &data->endian);
-//         }
-//         else // Южная стена (SO)
-//             texture_data = (int *)mlx_get_data_addr(data->textures[1], &data->bpp, &data->size_line, &data->endian);
-//     }
-    
-//     // if (data->ray.side == 0 && data->ray.rayDirX > 0)
-//     //     texX = texWidth - texX - 1;
-//     // if (data->ray.side == 1 && data->ray.rayDirY < 0)
-//     //     texX = texWidth - texX - 1;
-
-//     double step = 1.0 * texHeight / lineHeight;
-//     double texPos = (drawStart - data->h / 2 + lineHeight / 2) * step;
-
-//     for (int y = drawStart; y < drawEnd; y++)
-//     {
-//         int texY = (int)texPos % texHeight;  // Используем остаток от деления вместо побитового AND
-//         texPos += step;
-
-//         unsigned int color = texture_data[texHeight * texY + texX];
-
-//     //    // Закомментируем затемнение для отладки
-//     //     if (data->ray.side == 1)
-//     //     {
-//     //         color = (color >> 1) & 0x7F7F7F; // Затемнение для боковых стен
-//     //     }
-
-//         data->img_data[y * data->w + x] = color;
-//     }
-// }
-
 int is_space_free(t_data *data)
 {
-    return (data->player.newX >= 0 && data->player.newX < 24 && data->player.newY >= 0 && data->player.newY < 24 && worldMap[(int)data->player.newX][(int)data->player.newY] == 0); // What is WorldMap??
+    int newX = (int)data->player.newX;
+    int newY = (int)data->player.newY;
+
+    if (newX >= 0 && newX < data->w && newY >= 0 && newY < data->h)
+    {
+        return worldMap[newX][newY] == 0; // Убедись, что внутри карты и нет стены
+    }
+    return 0;
 }
 
 void move_forward(t_data *data)
 {
     data->player.newX = data->player.posX + data->player.dirX * data->player.moveSpeed;
     data->player.newY = data->player.posY + data->player.dirY * data->player.moveSpeed;
-    
+
+    // Жесткая проверка на обе оси (X и Y)
     if (is_space_free(data))
     {
-        data->player.posX = data->player.newX;
-    }
-    if (is_space_free(data))
-    {
-        data->player.posY = data->player.newY;
+        // Проверяем, не слишком ли близко игрок к стене по оси X
+        if (worldMap[(int)(data->player.newX + data->player.dirX * 0.1)][(int)data->player.posY] == 0)
+        {
+            data->player.posX = data->player.newX;
+        }
+
+        // Проверяем, не слишком ли близко игрок к стене по оси Y
+        if (worldMap[(int)data->player.posX][(int)(data->player.newY + data->player.dirY * 0.1)] == 0)
+        {
+            data->player.posY = data->player.newY;
+        }
     }
 }
-
 void move_backward(t_data *data)
 {
     data->player.newX = data->player.posX - data->player.dirX * data->player.moveSpeed;
     data->player.newY = data->player.posY - data->player.dirY * data->player.moveSpeed;
-    
+
     if (is_space_free(data))
     {
-        data->player.posX = data->player.newX;
-    }
-    if (is_space_free(data))
-    {
-        data->player.posY = data->player.newY;
+        if (worldMap[(int)(data->player.newX - data->player.dirX * 0.1)][(int)data->player.posY] == 0)
+        {
+            data->player.posX = data->player.newX;
+        }
+
+        if (worldMap[(int)data->player.posX][(int)(data->player.newY - data->player.dirY * 0.1)] == 0)
+        {
+            data->player.posY = data->player.newY;
+        }
     }
 }
 
@@ -394,11 +362,19 @@ void move_right(t_data *data)
 
     if (is_space_free(data))
     {
-        data->player.posX = data->player.newX;
-        data->player.posY = data->player.newY;
+        // Проверяем коллизии для оси X с корректным использованием вектора бокового движения
+        if (worldMap[(int)(data->player.newX + data->player.dirY * 0.1)][(int)data->player.posY] == 0)
+        {
+            data->player.posX = data->player.newX;
+        }
+
+        // Проверяем коллизии для оси Y с корректным использованием вектора бокового движения
+        if (worldMap[(int)data->player.posX][(int)(data->player.newY - data->player.dirX * 0.1)] == 0)
+        {
+            data->player.posY = data->player.newY;
+        }
     }
 }
-
 void move_left(t_data *data)
 {
     data->player.newX = data->player.posX - data->player.dirY * data->player.moveSpeed;
@@ -406,8 +382,17 @@ void move_left(t_data *data)
 
     if (is_space_free(data))
     {
-        data->player.posX = data->player.newX;
-        data->player.posY = data->player.newY;
+        // Проверяем коллизии для оси X с корректным использованием вектора бокового движения
+        if (worldMap[(int)(data->player.newX - data->player.dirY * 0.1)][(int)data->player.posY] == 0)
+        {
+            data->player.posX = data->player.newX;
+        }
+
+        // Проверяем коллизии для оси Y с корректным использованием вектора бокового движения
+        if (worldMap[(int)data->player.posX][(int)(data->player.newY + data->player.dirX * 0.1)] == 0)
+        {
+            data->player.posY = data->player.newY;
+        }
     }
 }
 
@@ -490,201 +475,6 @@ int render(void *param)
 }
 
 
-
-
-// int render(void *param)
-// {
-//     t_data *data = (t_data *)param;
-//     t_KeyState *keys = data->keys;
-
-//     clear_image(data);
-//     draw_floor_and_ceiling(data);
-    
-//     for (int x = 0; x < data->w; x++)
-//     {
-//             // Вычисление позиции и направления луча
-//             calculate_ray_direction(data, x);
-//             detect_wall_hit(data);
-//             draw_wall(data, x, drawStart, drawEnd);
-
-//             double sideDistX;
-//             double sideDistY;
-
-//             double deltaDistX = (rayDirX == 0) ? 1e30 : absValue(1 / rayDirX);
-//             double deltaDistY = (rayDirY == 0) ? 1e30 : absValue(1 / rayDirY);
-
-//             double perpWallDist;
-//             int stepX, stepY, hit = 0, side;
-
-//             // Расчет шага и начальных значений sideDist
-//             if (data->rayDirX < 0) {
-//                 stepX = -1;
-//                 sideDistX = (data->posX - data->mapX) * deltaDistX;
-//             } else {
-//                 stepX = 1;
-//                 sideDistX = (data->mapX + 1.0 - data->posX) * deltaDistX;
-//             }
-
-//             if (data->rayDirY < 0) {
-//                 stepY = -1;
-//                 sideDistY = (data->posY - mapY) * deltaDistY;
-//             } else {
-//                 stepY = 1;
-//                 sideDistY = (mapY + 1.0 - data->posY) * deltaDistY;
-//             }
-
-//            if (side == 0) {
-//             perpWallDist = (mapX - data->posX + (1 - stepX) / 2) / rayDirX;
-//         } else {
-//             perpWallDist = (mapY - data->posY + (1 - stepY) / 2) / rayDirY;
-//         }
-
-//         // Высота линии для отрисовки
-//         int lineHeight = (int)(data->h / perpWallDist);
-
-//         // Определение начальной и конечной точки отрисовки
-//         int drawStart = -lineHeight / 2 + data->h / 2;
-//         if (drawStart < 0) drawStart = 0;
-//         int drawEnd = lineHeight / 2 + data->h / 2;
-//         if (drawEnd >= data->h) drawEnd = data->h - 1;
-
-//         // Выбор текстуры
-//         // int texNum = worldMap[mapX][mapY] - 1; // Подразумевается, что текстуры начинаются с 1
-
-//         // Получение данных пикселей текстуры
-//         int *texture_data = (int *)mlx_get_data_addr(data->textures[0], &data->bpp, &data->size_line, &data->endian);
-
-//         // Вычисление координат текстуры
-//         double wallX;
-//         if (side == 0) {
-//             wallX = data->posY + perpWallDist * rayDirY;
-//         } else {
-//             wallX = data->posX + perpWallDist * rayDirX;
-//         }
-//         wallX -= floor(wallX);
-
-//         int texX = (int)(wallX * texWidth);
-//         if (side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
-//         if (side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
-
-//         // Вычисление шага и начальной текстурной координаты
-//         double step = 1.0 * texHeight / lineHeight;
-//         double texPos = (drawStart - data->h / 2 + lineHeight / 2) * step;
-
-//         for (int y = drawStart; y < drawEnd; y++)
-//         {
-//             int texY = (int)texPos & (texHeight - 1); // Применение маски, чтобы избежать переполнения
-//             texPos += step;
-
-//             // Получение цвета из текстуры
-//             unsigned int color = texture_data[texHeight * texY + texX];
-//             if (side == 1)
-//             {
-//                 color = (color >> 1) & 0x7F7F7F; // Затемнение для боковых стен
-//             }
-
-//             // Отрисовка вертикальной линии
-//             data->img_data[y * data->w + x] = color;
-//         }
-//     }
-//        // Движение вперёд
-//         if (keys->up)
-//         {
-//             double newX = data->posX + data->dirX * data->moveSpeed;
-//             double newY = data->posY + data->dirY * data->moveSpeed;
-
-//     // Проверка для движения вперед
-//             if (newX >= 0 && newX < 24 && (int)data->posY >= 0 && (int)data->posY < 24 && worldMap[(int)newX][(int)newY] == 0)
-//             {
-//                 data->posX = newX;
-//             }
-//             if ((int)data->posX >= 0 && (int)data->posX < 24 && newY >= 0 && newY < 24 && worldMap[(int)newX][(int)newY] == 0)
-//             {
-//                 data->posX = newX;
-//             }
-//         }
-
-//         if (keys->down)
-//         {
-//             double newX = data->posX - data->dirX * data->moveSpeed;
-//             double newY = data->posY - data->dirY * data->moveSpeed;
-
-//     // Проверка для движения назад
-//             if (newX >= 0 && newX < 24 && (int)data->posY >= 0 && (int)data->posY < 24 && worldMap[(int)newX][(int)newY] == 0)
-//             {
-//                 data->posX = newX;
-//             }
-//             if ((int)data->posX >= 0 && (int)data->posX < 24 && newY >= 0 && newY < 24 && worldMap[(int)newX][(int)newY] == 0)
-//             {
-//                 data->posX = newX;
-//             }
-//         }
-
-//         if (keys->right)
-//         {
-//     // Рассчитываем новые координаты, перемещая игрока вправо
-//             double newX = data->posX + data->dirY * data->moveSpeed;
-//             double newY = data->posY - data->dirX * data->moveSpeed;
-
-//     // Проверка для перемещения вправо
-//             if (newX >= 0 && newX < 24 && newY >= 0 && newY < 24 && worldMap[(int)newX][(int)newY] == 0)
-//             {
-//                 data->posX = newX;
-//                 data->posY = newY;
-//             }
-//         }
-
-// // Перемещение влево
-//         if (keys->left)
-//         {
-//     // Рассчитываем новые координаты, перемещая игрока влево
-//             double newX = data->posX - data->dirY * data->moveSpeed;
-//             double newY = data->posY + data->dirX * data->moveSpeed;
-
-//     // Проверка для перемещения влево
-//             if (newX >= 0 && newX < 24 && newY >= 0 && newY < 24 && worldMap[(int)newX][(int)newY] == 0)
-//             {
-//                 data->posX = newX;
-//                 data->posY = newY;
-//             }
-//         }
-        
-
-//         if (keys->pov_left)
-//         {
-//             double oldDirX = data->dirX;
-
-//     // Поворот направления камеры
-//             data->dirX = data->dirX * COS_ROT - data->dirY * (-SIN_ROT);
-//             data->dirY = oldDirX * (-SIN_ROT) + data->dirY * COS_ROT;
-
-//     // Поворот плоскости экрана
-//             double oldPlaneX = data->planeX;
-//             data->planeX = data->planeX * COS_ROT - data->planeY * (-SIN_ROT);
-//             data->planeY = oldPlaneX * (-SIN_ROT) + data->planeY * COS_ROT;
-//         }
-
-//         if (keys->pov_right)
-//         {
-//             double oldDirX = data->dirX;
-
-//     // Поворот направления камеры
-//             data->dirX = data->dirX * COS_ROT - data->dirY * SIN_ROT;
-//             data->dirY = oldDirX * SIN_ROT + data->dirY * COS_ROT;
-
-//     // Поворот плоскости экрана
-//             double oldPlaneX = data->planeX;
-//             data->planeX = data->planeX * COS_ROT - data->planeY * SIN_ROT;
-//             data->planeY = oldPlaneX * SIN_ROT + data->planeY * COS_ROT;
-//         }
-
-//         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img, 0, 0);
-
-//     // Шаг 6: Очистка ресурсов
-//         mlx_destroy_image(data->mlx_ptr, data->img);
-//     return 0;
-// }
-
 int close_window(void *param)
 {
     t_data *data = (t_data *)param;
@@ -697,6 +487,34 @@ int close_window(void *param)
     }
     return (0);
 }
+
+
+
+// int mouse_move(int x, t_data *data)
+// {
+//     static int prev_x = 0; // Сохраняем предыдущее положение по X для расчета смещения
+//     int delta_x = x - prev_x;
+
+//     prev_x = x; // Обновляем предыдущее положение
+
+//     if (delta_x != 0)
+//     {
+//         // Рассчитываем угол поворота на основе delta_x (чем больше смещение, тем сильнее поворот)
+//         double rotation_speed = 0.005; // Настроить скорость поворота для удобства
+//         double rot_angle = delta_x * rotation_speed;
+
+//         // Вращение камеры на основе угла поворота
+//         double oldDirX = data->player.dirX;
+//         data->player.dirX = data->player.dirX * cos(rot_angle) - data->player.dirY * sin(rot_angle);
+//         data->player.dirY = oldDirX * sin(rot_angle) + data->player.dirY * cos(rot_angle);
+
+//         double oldPlaneX = data->player.planeX;
+//         data->player.planeX = data->player.planeX * cos(rot_angle) - data->player.planeY * sin(rot_angle);
+//         data->player.planeY = oldPlaneX * sin(rot_angle) + data->player.planeY * cos(rot_angle);
+//     }
+
+//     return 0;
+// }
 
 int main(int argc, char **argv)
 {
@@ -743,8 +561,8 @@ int main(int argc, char **argv)
     data->mlx_ptr = mlx_ptr;
     data->win_ptr = win_ptr;
     data->keys = &keys;
-    data->player.posX = 22;
-    data->player.posY = 11.5;
+    data->player.posX = 22.5;
+    data->player.posY = 12;
     data->player.dirX = -1;
     data->player.dirY = 0;
     data->player.planeX = 0;
@@ -762,6 +580,7 @@ int main(int argc, char **argv)
     
     mlx_hook(win_ptr, 2, 1L << 0, key_hook, &keys);
     mlx_hook(win_ptr, 3, 1L << 1, key_release_hook, &keys);
+    // mlx_hook(win_ptr, 6, 0, mouse_move, data);
     mlx_hook(win_ptr, 17, 0L, close_window, data);
     mlx_loop_hook(mlx_ptr, render, data);
     mlx_loop(mlx_ptr);
