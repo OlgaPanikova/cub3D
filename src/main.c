@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:28:49 by lelichik          #+#    #+#             */
-/*   Updated: 2024/09/26 16:50:43 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/28 17:10:49 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -516,12 +516,12 @@ int close_window(void *param)
 //     return 0;
 // }
 
-int main(int argc, char **argv)
+int main1(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
 
-    t_data *data;
+    t_data1 *data;
     t_KeyState keys;
 
     keys.up = 0;

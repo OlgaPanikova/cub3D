@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 11:54:14 by lelichik          #+#    #+#             */
-/*   Updated: 2024/09/23 21:01:51 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/28 17:10:58 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_ray
     double perpWallDist;
 } t_ray;
 
-typedef struct s_data
+typedef struct s_data1
 {
     void *mlx_ptr;
     void *win_ptr;
@@ -94,7 +94,7 @@ typedef struct s_data
     int *img_data;
     void *textures[4];
     char *textures_path[4];
-} t_data;
+} t_data1;
 
 
 #endif
