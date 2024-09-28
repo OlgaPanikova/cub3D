@@ -15,6 +15,8 @@
 
 void	free_data(t_cub *data)
 {
+	int	i;
+
 	if (data->north_texture)
 		free(data->north_texture);
 	if (data->south_texture)
@@ -23,11 +25,15 @@ void	free_data(t_cub *data)
 		free(data->west_texture);
 	if (data->east_texture)
 		free(data->east_texture);
+
 	if (data->map)
 	{
-		int i = 0;
-		while (i < data->map_height)
-			free(data->map[i++]);
+		i = 0;
+		while (data->map[i])
+		{
+			free(data->map[i]);
+			i++;
+		}
 		free(data->map);
 	}
 }

@@ -25,17 +25,20 @@
 
 typedef struct s_cub
 {
-	char	*north_texture;
-	char	*south_texture;
-	char	*west_texture;
-	char	*east_texture;
-	int		floor_color[3]; // RGB
-	int		ceiling_color[3]; // RGB
+	char			*north_texture;
+	char			*south_texture;
+	char			*west_texture;
+	char			*east_texture;
+	int				floor_color[3]; // RGB
+	int				ceiling_color[3]; // RGB
 	unsigned int	hex_floor;
 	unsigned int	hex_ceiling;
-	char	**map; // Сам лабиринт
-	int		map_width;
-	int		map_height;
+	char			**map;
+	int				map_width;
+	int				map_height;
+	double				pos_x;
+    double				pos_y;
+    char			direction;   // Направление игрока (N, W, E, S)
 }	t_cub;
 
 
@@ -63,6 +66,10 @@ void		free_data(t_cub *data);
 
 char		*strdup_until_newline(const char *line);
 void 		rgb_to_hex(t_cub *data);
+
+int			check_map(t_cub *data);
+int			ft_check_flood_fill(t_cub *data);
+int			ft_flood_fill(t_cub *data, int y, int x);
 
 
 #endif

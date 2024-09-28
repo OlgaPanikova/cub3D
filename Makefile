@@ -22,7 +22,8 @@ SRCS = main.c \
 		$(PARSING_DIR)/parsing.c \
 		$(PARSING_DIR)/parsing_2.c \
 		$(PARSING_DIR)/parsing_map.c \
-		$(PARSING_DIR)/utils.c
+		$(PARSING_DIR)/utils.c \
+		$(PARSING_DIR)/check_map.c
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 

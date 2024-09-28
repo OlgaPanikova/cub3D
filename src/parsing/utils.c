@@ -25,14 +25,12 @@ char	*strdup_until_newline(const char *line)
 	int		i;
 
 	len = 0;
-	printf("%s\n", line);
 	while (line[len] != '\n' && line[len] != '\0')
 		len++;
 
 	new_str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new_str)
 		return NULL; // или что то другое? выходить из программы?
-	printf("%s\n", line);
 	i = 0;
 	while (i < len)
 	{
@@ -40,7 +38,5 @@ char	*strdup_until_newline(const char *line)
 		i++;
 	}
 	new_str[len] = '\0';
-
-	printf("str new Line = %s\n", new_str);
 	return (new_str);
 }

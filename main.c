@@ -12,23 +12,6 @@
 
 #include "cub3D.h"
 
-void print_map(char **map) {
-    int i = 0;
-
-    // Пока текущий указатель (строка) не равен NULL
-    while (map[i] != NULL) {
-        int j = 0;
-
-        // Пока не достигнем конца строки (символ '\0')
-        while (map[i][j] != '\0') {
-            printf("[%c] ", map[i][j]);
-            j++;
-        }
-        printf("\n"); // Переход на новую строку после вывода всей строки
-        i++;
-    }
-}
-
 
 
 void	init_data(t_cub *data)
@@ -42,8 +25,8 @@ void	init_data(t_cub *data)
 	i = -1;
 	while (++i < 3)
 	{
-		data->floor_color[i] =0;
-		data->ceiling_color[i] = 0;
+		data->floor_color[i] = -1;
+		data->ceiling_color[i] = -1;
 	}
 	data->map = NULL;
 	data->map_width = 0;
@@ -67,16 +50,14 @@ int main(int args, char **argv)
 	}
 
 	rgb_to_hex(&data); // цвета приводим к одному значению!!
-
+/*
 	printf("North texture: %s\n", data.north_texture);
 	printf("South texture: %s\n", data.south_texture);
 	printf("West texture: %s\n", data.west_texture);
 	printf("East texture: %s\n", data.east_texture);
 	printf("Floor color: %d,%d,%d\n", data.floor_color[0], data.floor_color[1], data.floor_color[2]);
 	printf("Ceiling color: %d,%d,%d\n", data.ceiling_color[0], data.ceiling_color[1], data.ceiling_color[2]);
-
-
-	print_map(data.map);
+*/
 
 	free_data(&data);
 	return (0);

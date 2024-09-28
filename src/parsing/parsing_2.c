@@ -41,7 +41,6 @@ int	check_texture_file(const char *filename)
 
 int	check_texture_files(t_cub *data)
 {
-	printf("texture: %s\n", data->north_texture);
 	if (check_texture_file(data->north_texture) != 0)
 		return (1);
 	if (check_texture_file(data->south_texture) != 0)
@@ -90,7 +89,7 @@ int	parse_color(int *color, char *line)
 		{
 			if (*line != ',')
 			{
-				printf("Error: Missing comma between color values.\n");
+				printf("Error\n Missing comma between color values.\n");
 				return (-1);
 			}
 			line++;
@@ -98,6 +97,17 @@ int	parse_color(int *color, char *line)
 		line = skip_spaces(line);
 		i++;
 	}
+
+	i = 0;
+	/*while(i < 3)
+	{
+		if (color[i] == -1)
+		{
+			printf("Error: Color not fully specified.\n");
+			return (-1);
+		}
+		i++;
+	}*/
 	return (0);
 }
 
@@ -105,7 +115,6 @@ int	parse_texture(char **dest, char *line, const char *identifier)
 {
 		line += strlen(identifier);
 		line = skip_spaces(line);
-		printf("\n");
 		*dest = strdup_until_newline(line);;
 		if (!*dest)
 			exit(-1);
