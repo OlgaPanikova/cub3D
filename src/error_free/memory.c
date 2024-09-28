@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 21:28:16 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/23 21:28:16 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/28 22:51:56 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	free_data(t_cub *data)
 		free(data->west_texture);
 	if (data->east_texture)
 		free(data->east_texture);
-
 	if (data->map)
 	{
 		i = 0;

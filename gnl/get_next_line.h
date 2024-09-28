@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 23:40:03 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/19 23:40:03 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/28 22:28:42 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ size_t		find_new_line(char *str);
 char		*after_n(char *str);
 char		*before_n(char *str);
 char		*ft_strchr(char const *str, int c);
-char		*ft_strjoin(char *buffer_save, char const *content);
+char		*ft_strjoin1(char *buffer_save, char const *content);
 char		*free_return_null(char *buf1, char *buf2);
 
 #endif

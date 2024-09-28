@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 19:36:26 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/23 22:30:16 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/28 22:46:17 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	**add_line_to_map(char **map, int current_size, char *new_line)
 
 int	is_map_line_valid(const char *line)
 {
-	while (*line != '\0' && *line != '\n') // !!!!!!!!!!!!!! пока не конец строки
+	while (*line != '\0' && *line != '\n')
 	{
 		if (*line != '1' && *line != '0' && *line != 'N' && *line != 'S' && *line != 'E' && *line != 'W' && *line != ' ')
 			return (0);
@@ -52,7 +52,7 @@ int	parse_map(t_cub *data, char *line)
 {
 	data->map = add_line_to_map(data->map, data->map_height, line);
 	if (!data->map)
-		return (ft_print_error("Error: Memory allocation failed\n", 1));
+		ft_exit(data, "Error\nmemory not allocated", -1);
 	data->map_height++;
 	return (0);
 }

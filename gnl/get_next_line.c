@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:21:12 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/19 22:21:12 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/28 22:29:17 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strjoin(char *buffer_save, const char *content)
+char	*ft_strjoin1(char *buffer_save, char const *content)
 {
 	char	*container;
 	int		i;
@@ -91,7 +91,7 @@ char	*get_next_line(int fd)
 		if (read_bytes == -1)
 			return (free_return_null(content, buffer_save));
 		content[read_bytes] = '\0';
-		buffer_save = ft_strjoin(buffer_save, content);
+		buffer_save = ft_strjoin1(buffer_save, content);
 	}
 	free(content);
 	content = before_n(buffer_save);
