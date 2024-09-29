@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 19:36:33 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/28 23:25:06 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/29 17:37:51 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ char	*parse_single_color(t_cub *data, char *line)
 	char	*end;
 
 	if (!ft_isdigit(*line))
-		ft_exit(data, "Error\nNon-digit character encountered in color value", 1);
+		ft_exit(data,
+			"Error\nNon-digit character encountered in color value", 1);
 	end = line;
 	while (*end && ft_isdigit(*end))
 		end++;

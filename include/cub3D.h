@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/28 22:58:54 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/29 17:05:13 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void 		rgb_to_hex(t_cub *data);
 
 int			check_map(t_cub *data);
 int			ft_check_flood_fill(t_cub *data);
-int			check_walls(t_cub *data, int y, int x);
+void		check_walls(t_cub *data, int y, int x);
 
 
 #endif
