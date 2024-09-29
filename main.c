@@ -131,3 +131,6 @@ int main(int args, char **argv)
 	free_data(&data);
 	return (0);
 }
+
+		data->floor_color[i] = -1;
+		data->ceiling_color[i] = -1;

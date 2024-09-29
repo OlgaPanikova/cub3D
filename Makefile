@@ -61,3 +61,4 @@ re: fclean all
 
 $(LIBFTAM):
 	@$(MAKE) -C $(LIBFTMLX)
+		$(PARSING_DIR)/check_map.c
