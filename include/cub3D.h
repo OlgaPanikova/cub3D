@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 17:05:13 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/29 19:35:36 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,16 @@ char	*get_next_line(int fd);
 
 int		ft_print_error(char *s, int code);
 
-int		check_file_extension(const char *filename);
 int		parse_color_line(t_cub *data, char *line);
 int		parse_texture_line(t_cub *data, char *line);
 int		process_line(t_cub *data, char *line, int *is_map_parsing,
 			int *elements_completed);
 int		parsing_args(t_cub *data, const char *file);
+int		open_file(t_cub *data, const char *file);
 
-char		*skip_spaces(char *line);
+int		parse_lines(t_cub *data, int fd);
+void	check_after_map(int fd, t_cub *data);
+
 int			parse_color(t_cub *data, int *color, char *line);
 int			parse_texture(t_cub *data, char **dest, char *line, const char *identifier);
 int			check_texture_files(t_cub *data);
@@ -67,8 +69,11 @@ void		ft_exit(t_cub *data, char *str, int i);
 
 char		*strdup_until_newline(const char *line);
 void 		rgb_to_hex(t_cub *data);
+int			check_texture_extension(const char *filename);
+char		*skip_spaces(char *line);
+int			check_file_extension(const char *filename);
 
-int			check_map(t_cub *data);
+void		check_map(t_cub *data);
 int			ft_check_flood_fill(t_cub *data);
 void		check_walls(t_cub *data, int y, int x);
 

@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:37:09 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 17:16:08 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/29 18:43:55 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	check_walls(t_cub *data, int y, int x)
 	}
 }
 
-int	check_map(t_cub *data)
+void	check_map(t_cub *data)
 {
 	int		i;
 	int		player_found;
@@ -79,6 +79,5 @@ int	check_map(t_cub *data)
 		i++;
 	}
 	if (!player_found)
-		return (ft_print_error("Error: No player position in map\n", 1));
-	return (0);
+		ft_exit(data, "Error\nNo player position in map", 1);
 }

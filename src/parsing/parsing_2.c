@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 19:36:33 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 17:37:51 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/29 18:06:21 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,6 @@ char	*parse_single_color(t_cub *data, char *line)
 	while (*end && ft_isdigit(*end))
 		end++;
 	return (end);
-}
-
-
-int	check_texture_extension(const char *filename)
-{
-	const char	*ext;
-	size_t		len_filename;
-	size_t		len_ext;
-
-	ext = ".xpm";
-	len_filename = ft_strlen(filename);
-	len_ext = ft_strlen(ext);
-	if (len_filename <= len_ext)
-		return (0);
-	return (ft_strncmp(filename + len_filename - len_ext, ext, len_ext) == 0);
 }
 
 int	check_texture_file(const char *filename)
@@ -64,14 +49,6 @@ int	check_texture_files(t_cub *data)
 	if (check_texture_file(data->east_texture) != 0)
 		return (1);
 	return (0);
-}
-
-
-char	*skip_spaces(char *line)
-{
-	while (*line && (*line == ' ' || *line == '\t'))
-		line++;
-	return (line);
 }
 
 int	parse_color(t_cub *data, int *color, char *line)
@@ -103,10 +80,10 @@ int	parse_color(t_cub *data, int *color, char *line)
 
 int	parse_texture(t_cub *data, char **dest, char *line, const char *identifier)
 {
-		line += ft_strlen(identifier);
-		line = skip_spaces(line);
-		*dest = strdup_until_newline(line);;
-		if (!*dest)
-			ft_exit(data, "Error\nmemory not allocated", -1);
-		return (0);
+	line += ft_strlen(identifier);
+	line = skip_spaces(line);
+	*dest = strdup_until_newline(line);
+	if (!*dest)
+		ft_exit(data, "Error\nmemory not allocated", -1);
+	return (0);
 }
