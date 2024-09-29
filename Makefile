@@ -1,66 +1,63 @@
 NAME = cub3D
-#NAMEB = so_long_bonus
-SRCDIR = src
-OBJDIR = obj
-#SRCBDIR = srcb
-#OBJBDIR = objb
-SRCS = $(addprefix $(SRCDIR)/, main.c)
-OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
-#SRCB = $(addprefix $(SRCBDIR)/, main_bonus.c check_map_bonus.c ft_free_bonus.c check_map_2_bonus.c flood_fill_bonus.c painting_map_bonus.c sprites_bonus.c game_end_bonus.c animal_bonus.c)
-#OBJB = $(patsubst $(SRCBDIR)/%.c, $(OBJBDIR)/%.o, $(SRCB))
+
 CC = cc
-RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror
-LIBFT = ./Libft
-LIBFTA = $(LIBFT)/libft.a
-#LIBGNL = ./get_next_line
-#LIBGNLA = $(LIBGNL)/libgnl.a
-LIBS = -L$(LIBFT) -lft #-L$(LIBGNL) -lgnl
+LIBFT = ./LIBFT/libft.a
+
+SRC_DIR = ./src
+GNL_DIR = ./gnl
+INC_DIR = ./include
+LIBFT_DIR = ./LIBFT
+MAP_DIR = ./maps
 LIBFTMLX = ./MLX
 LIBFTAM = $(LIBFTMLX)/libmlx.a
-# MLXFLAGS = -lmlx -framework OpenGL -framework AppKit
 LIBSMLX = -Lmlx -lmlx -framework OpenGL -framework AppKit
 HEADER = $(SRCDIR)/cub3D.h
-#HEADERB = $(SRCBDIR)/so_long_bonus.h
+ERROR_FREE_DIR = $(SRC_DIR)/error_free
+PARSING_DIR = $(SRC_DIR)/parsing
 
-all: $(NAME)
+OBJS_DIR = ./objs
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADER)
-	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -Imlx -c $< -o $@
+SRCS = main.c \
+		$(GNL_DIR)/get_next_line.c \
+		$(GNL_DIR)/get_next_line_utils.c \
+		$(ERROR_FREE_DIR)/error.c \
+		$(ERROR_FREE_DIR)/memory.c \
+		$(PARSING_DIR)/parsing.c \
+		$(PARSING_DIR)/parsing_2.c \
+		$(PARSING_DIR)/parsing_map.c \
+		$(PARSING_DIR)/utils.c
 
-$(NAME): $(OBJS) $(LIBFTA) #$(LIBGNLA)
-	$(CC) $(CFLAGS) -Imlx $(OBJS) $(LIBS) $(LIBSMLX) -o $(NAME)
+OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
-$(LIBFTAM):
-	@$(MAKE) -C $(LIBFTMLX)
+INCLUDES = -I$(INC_DIR) -I$(GNL_DIR) -I$(LIBFT_DIR)
 
-$(LIBFTA):
-	@$(MAKE) -C $(LIBFT)
+all: $(OBJS_DIR) $(NAME)
 
-#$(LIBGNLA):
-#	@$(MAKE) -C $(LIBGNL)
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
 
-#bonus: $(NAMEB)
+$(OBJS_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)  # Создаём поддиректории, если их ещё нет
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-#$(NAMEB): $(OBJB) $(LIBFTA) $(LIBGNLA)
-#	$(CC) $(CFLAGS) -Imlx $(OBJB) $(LIBS) $(LIBSMLX) -o $(NAMEB)
+$(OBJS_DIR):
+	mkdir -p $(OBJS_DIR)
 
-#$(OBJBDIR)/%.o: $(SRCBDIR)/%.c $(HEADERB)
-#	mkdir -p $(OBJBDIR)
-#	$(CC) $(CFLAGS) -Imlx -c $< -o $@
+$(LIBFT):
+	make -C $(LIBFT_DIR)
 
 clean:
-	$(RM) $(OBJS)
-	$(RM) $(OBJDIR)
-	@$(MAKE) -C $(LIBFT) clean
-#	@$(MAKE) -C $(LIBGNL) clean
+	rm -rf $(OBJS_DIR)
+	make clean -C $(LIBFT_DIR)
 
 fclean: clean
-	$(RM) $(NAME) $(NAMEB)
-	@$(MAKE) -C $(LIBFT) fclean
-#	@$(MAKE) -C $(LIBGNL) fclean
+	rm -rf $(NAME)
+	make fclean -C $(LIBFT_DIR)
 
 re: fclean all
 
-.PHONY: all clean fclean re #bonus
+.PHONY: all clean fclean re
+
+$(LIBFTAM):
+	@$(MAKE) -C $(LIBFTMLX)
