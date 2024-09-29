@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:40:51 by opanikov          #+#    #+#             */
-/*   Updated: 2024/09/28 19:51:55 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/29 17:16:58 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,15 @@ int	detect_wall_hit(t_cub *data)
 			data->ray.mapY += data->ray.stepY;
 			data->ray.side = 1;
 		}
-		if (data->map[data->ray.mapX][data->ray.mapY] > 0)
+		if (data->map[data->ray.mapX][data->ray.mapY] > '0')
 			hit = 1;
+		// printf("Map value at [4][2]: %d\n", data->map[4][2]);
+		// printf("Checking mapX = %d, mapY = %d\n", data->ray.mapX, data->ray.mapY);
 	}
 	return (hit);
 }
 
-double absValue(double x)
+double	absValue(double x)
 {
 	if (x < 0)
 		return -x;

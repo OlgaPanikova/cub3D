@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 21:18:05 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/28 23:26:28 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/29 16:54:54 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void print_map(char **map) {
-    int i = 0;
+// void print_map(char **map) {
+//     int i = 0;
 
-    // Пока текущий указатель (строка) не равен NULL
-    while (map[i] != NULL) {
-        int j = 0;
+//     // Пока текущий указатель (строка) не равен NULL
+//     while (map[i] != NULL) {
+//         int j = 0;
 
-        // Пока не достигнем конца строки (символ '\0')
-        while (map[i][j] != '\0') {
-            printf("[%c] ", map[i][j]);
-            j++;
-        }
-        printf("\n"); // Переход на новую строку после вывода всей строки
-        i++;
-    }
-}
+//         // Пока не достигнем конца строки (символ '\0')
+//         while (map[i][j] != '\0') {
+//             printf("[%c] ", map[i][j]);
+//             j++;
+//         }
+//         printf("\n"); // Переход на новую строку после вывода всей строки
+//         i++;
+//     }
+// }
 
 
 int	check_file_extension(const char *filename)
@@ -174,7 +174,7 @@ int	parsing_args(t_cub *data, const char *file)
 
 	if(data->map)
 	{
-		print_map(data->map);
+		// print_map(data->map);
 		if (check_map(data) != 0)
 		{
 			close(fd);

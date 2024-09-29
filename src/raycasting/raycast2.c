@@ -6,13 +6,13 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:58:09 by opanikov          #+#    #+#             */
-/*   Updated: 2024/09/28 21:48:49 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:14:04 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void draw_wall(t_data *data, int x, int drawStart, int drawEnd, double wallX, int *texture_data, int lineHeight)
+void draw_wall(t_cub *data, int x, int drawStart, int drawEnd, double wallX, int *texture_data, int lineHeight)
 {
 	int texX;
 	double step;
@@ -30,7 +30,7 @@ void draw_wall(t_data *data, int x, int drawStart, int drawEnd, double wallX, in
 }
 
 
-double	calculate_wall_hit_position(t_data *data, double perpWallDist)
+double	calculate_wall_hit_position(t_cub *data, double perpWallDist)
 {
 	double wallX;
 
@@ -43,7 +43,7 @@ double	calculate_wall_hit_position(t_data *data, double perpWallDist)
 	return wallX;
 }
 
-void	calculate_wall_dimensions(t_data *data, double perpWallDist, int *lineHeight, int *drawStart, int *drawEnd)
+void	calculate_wall_dimensions(t_cub *data, double perpWallDist, int *lineHeight, int *drawStart, int *drawEnd)
 {
 	*lineHeight = (int)(data->h / perpWallDist);
 	*drawStart = -(*lineHeight) / 2 + data->h / 2;
@@ -55,7 +55,7 @@ void	calculate_wall_dimensions(t_data *data, double perpWallDist, int *lineHeigh
 		*drawEnd = data->h - 1;
 }
 
-void	render_wall(t_data *data, int x)
+void	render_wall(t_cub *data, int x)
 {
 	double perpWallDist;
 	int lineHeight;

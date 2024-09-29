@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 21:49:25 by opanikov          #+#    #+#             */
-/*   Updated: 2024/09/28 22:00:27 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/29 16:08:02 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_space_free(t_cub *data)
 	newY = (int)data->player.newY;
 
 	if (newX >= 0 && newX < data->w && newY >= 0 && newY < data->h)
-		return map[newX][newY] == 0; // Убедись, что внутри карты и нет стены
+		return data->map[newX][newY] == 0; // Убедись, что внутри карты и нет стены
 	return (0);
 }
 
@@ -33,10 +33,10 @@ void	move_forward(t_cub *data)
 	if (is_space_free(data))
 	{
         // Проверяем, не слишком ли близко игрок к стене по оси X
-		if (map[(int)(data->player.newX + data->player.dirX * 0.1)][(int)data->player.posY] == 0)
+		if (data->map[(int)(data->player.newX + data->player.dirX * 0.1)][(int)data->player.posY] == 0)
 			data->player.posX = data->player.newX;
         // Проверяем, не слишком ли близко игрок к стене по оси Y
-		if (map[(int)data->player.posX][(int)(data->player.newY + data->player.dirY * 0.1)] == 0)
+		if (data->map[(int)data->player.posX][(int)(data->player.newY + data->player.dirY * 0.1)] == 0)
 			data->player.posY = data->player.newY;
 	}
 }
@@ -47,14 +47,14 @@ void	move_backward(t_cub *data)
 
 	if (is_space_free(data))
 	{
-		if (map[(int)(data->player.newX - data->player.dirX * 0.1)][(int)data->player.posY] == 0)
+		if (data->map[(int)(data->player.newX - data->player.dirX * 0.1)][(int)data->player.posY] == 0)
 			data->player.posX = data->player.newX;
-		if (map[(int)data->player.posX][(int)(data->player.newY - data->player.dirY * 0.1)] == 0)
+		if (data->map[(int)data->player.posX][(int)(data->player.newY - data->player.dirY * 0.1)] == 0)
 			data->player.posY = data->player.newY;
 	}
 }
 
-void	move_right(t_data *data)
+void	move_right(t_cub *data)
 {
 	data->player.newX = data->player.posX + data->player.dirY * data->player.moveSpeed;
 	data->player.newY = data->player.posY - data->player.dirX * data->player.moveSpeed;
@@ -62,14 +62,14 @@ void	move_right(t_data *data)
 	if (is_space_free(data))
 	{
         // Проверяем коллизии для оси X с корректным использованием вектора бокового движения
-		if (map[(int)(data->player.newX + data->player.dirY * 0.1)][(int)data->player.posY] == 0)
+		if (data->map[(int)(data->player.newX + data->player.dirY * 0.1)][(int)data->player.posY] == 0)
 			data->player.posX = data->player.newX;
         // Проверяем коллизии для оси Y с корректным использованием вектора бокового движения
-		if (map[(int)data->player.posX][(int)(data->player.newY - data->player.dirX * 0.1)] == 0)
+		if (data->map[(int)data->player.posX][(int)(data->player.newY - data->player.dirX * 0.1)] == 0)
 			data->player.posY = data->player.newY;
 	}
 }
-void move_left(t_data *data)
+void move_left(t_cub *data)
 {
 	data->player.newX = data->player.posX - data->player.dirY * data->player.moveSpeed;
 	data->player.newY = data->player.posY + data->player.dirX * data->player.moveSpeed;
@@ -77,15 +77,15 @@ void move_left(t_data *data)
 	if (is_space_free(data))
 	{
         // Проверяем коллизии для оси X с корректным использованием вектора бокового движения
-		if (map[(int)(data->player.newX - data->player.dirY * 0.1)][(int)data->player.posY] == 0)
+		if (data->map[(int)(data->player.newX - data->player.dirY * 0.1)][(int)data->player.posY] == 0)
 			data->player.posX = data->player.newX;
         // Проверяем коллизии для оси Y с корректным использованием вектора бокового движения
-		if (map[(int)data->player.posX][(int)(data->player.newY + data->player.dirX * 0.1)] == 0)
+		if (data->map[(int)data->player.posX][(int)(data->player.newY + data->player.dirX * 0.1)] == 0)
 			data->player.posY = data->player.newY;
 	}
 }
 
-void rotate_left(t_data *data)
+void rotate_left(t_cub *data)
 {
 	double	oldDirX;
 
@@ -98,7 +98,7 @@ void rotate_left(t_data *data)
 	data->player.planeY = oldPlaneX * (-SIN_ROT) + data->player.planeY * COS_ROT;
 }
 
-void rotate_right(t_data *data)
+void rotate_right(t_cub *data)
 {
 	double	oldDirX;
 

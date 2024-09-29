@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast1.c                                         :+:      :+:    :+:   */
+/*   clean_win_create_floor_ceiling.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 18:41:36 by opanikov          #+#    #+#             */
-/*   Updated: 2024/09/28 19:04:55 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/29 16:06:31 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void draw_ceiling(t_cub *data, unsigned int hex_ceiling)
+void draw_ceiling(t_cub *data)
 {
 	unsigned int	*pixels;
 	int				half_height;

@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 17:47:39 by opanikov          #+#    #+#             */
-/*   Updated: 2024/09/28 18:26:24 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/29 16:05:31 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	close_window(void *param)
 {
-	t_cub	*data = (t_data *)param;
+	t_cub	*data = (t_cub *)param;
 
 	if (data->mlx_ptr && data->win_ptr)
 	{
@@ -77,7 +77,7 @@ void	*file_to_image(t_cub *data, char *textures_path)
 	img = mlx_xpm_file_to_image(data->mlx_ptr, textures_path, &img_w, &img_h);
 	if (!img)
 	{
-		printf(stderr, "Ошибка загрузки изображения: %s\n", textures_path); // очистить память 
+		// printf(stderr, "Ошибка загрузки изображения: %s\n", textures_path); // очистить память 
 		exit(EXIT_FAILURE); // Выход из программы при ошибке
 	}
 	return (img);

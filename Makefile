@@ -12,9 +12,9 @@ MAP_DIR = ./maps
 LIBFTMLX = ./MLX
 LIBFTAM = $(LIBFTMLX)/libmlx.a
 LIBSMLX = -Lmlx -lmlx -framework OpenGL -framework AppKit
-HEADER = $(SRCDIR)/cub3D.h
 ERROR_FREE_DIR = $(SRC_DIR)/error_free
 PARSING_DIR = $(SRC_DIR)/parsing
+RAYCASTING_DIR = $(SRC_DIR)/raycasting
 
 OBJS_DIR = ./objs
 
@@ -26,7 +26,15 @@ SRCS = main.c \
 		$(PARSING_DIR)/parsing.c \
 		$(PARSING_DIR)/parsing_2.c \
 		$(PARSING_DIR)/parsing_map.c \
-		$(PARSING_DIR)/utils.c
+		$(PARSING_DIR)/utils.c \
+		$(PARSING_DIR)/check_map.c \
+		$(RAYCASTING_DIR)/add_texture_key.c \
+		$(RAYCASTING_DIR)/clean_win_create_floor_ceiling.c \
+		$(RAYCASTING_DIR)/process_input.c \
+		$(RAYCASTING_DIR)/raycast1.c \
+		$(RAYCASTING_DIR)/raycast2.c \
+		$(RAYCASTING_DIR)/raycast3.c \
+		$(RAYCASTING_DIR)/start.c \
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
@@ -35,17 +43,20 @@ INCLUDES = -I$(INC_DIR) -I$(GNL_DIR) -I$(LIBFT_DIR)
 all: $(OBJS_DIR) $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBSMLX) -L$(LIBFT_DIR) -lft -o $(NAME)
 
 $(OBJS_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)  # Создаём поддиректории, если их ещё нет
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -Imlx -c $< -o $@
 
 $(OBJS_DIR):
 	mkdir -p $(OBJS_DIR)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
+
+$(LIBFTAM):
+	@$(MAKE) -C $(LIBFTMLX)
 
 clean:
 	rm -rf $(OBJS_DIR)
@@ -59,6 +70,3 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-$(LIBFTAM):
-	@$(MAKE) -C $(LIBFTMLX)
-		$(PARSING_DIR)/check_map.c

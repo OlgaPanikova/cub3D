@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:37:09 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/28 22:23:30 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/09/29 14:44:01 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	validate_player(t_cub *data, int i, size_t j, int *player_found)
 {
 	if (*player_found)
 		return (ft_print_error("Error: Multiple player positions in map\n", 1));
-	data->posX = j + 0.5;
-	data->posY = i + 0.5;
+	data->player.posX = j + 0.5;
+	data->player.posY = i + 0.5;
 	data->direction = data->map[i][j];
 	*player_found = 1;
 	return (0);
@@ -62,7 +62,7 @@ int	check_walls(t_cub *data, int y, int x)
 int	check_map(t_cub *data)
 {
 	int		i;
-	int player_found;
+	int		player_found;
 	size_t	j;
 	size_t len;
 
