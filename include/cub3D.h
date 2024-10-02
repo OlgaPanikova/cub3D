@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 16:26:19 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/02 19:25:52 by lelichik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,31 @@
 # include "libft.h"
 # include "mlx.h"
 # include <sys/time.h>
+#include <math.h>
 
-# define screenWidth  840 //размеры экрана
-# define screenHeight 680
+# define screenWidth  640 //размеры экрана
+# define screenHeight 480
 
-# define MOVE_SPEED 0.1
-# define ROT_SPEED 0.05
+# define MOVE_SPEED 0.11
+# define ROT_SPEED 0.07
 
 #define COS_ROT 0.996
 #define SIN_ROT 0.087
 
 #define texWidth 100
 #define texHeight 100
+
+typedef struct s_texture
+{
+	void	*img;
+	int		*addr;
+	char	**data;
+	int		bpp;
+	int		size_line;
+	int		endian;
+	int		width;
+	int		height;
+}				t_texture;
 
 typedef struct s_key
 {
@@ -76,6 +89,7 @@ typedef struct s_ray
 	int		stepY;
 	int		side;
 	double	perpWallDist;
+	double	wallx;
 } t_ray;
 
 typedef struct s_cub
@@ -91,22 +105,36 @@ typedef struct s_cub
 	char			**map;
 	int				map_width;
 	int				map_height;
-	// double				posX;
-	// double				posY;
 	char			direction;   // Направление игрока (N, W, E, S)
 	void			*mlx_ptr;
 	void			*win_ptr;
 	t_KeyState		*keys;
 	t_player		player;
 	t_ray			ray;
-	int				bpp;
-	int				size_line;
-	int				endian;
 	void			*img;
 	int				*img_data;
-	int				w;
-	int				h;
+	int				wight_screen;
+	int				hight_screen;
 	void			*textures[4];
+	char			*textures_path[4];
+	int**			worldMap;
+	t_texture	*n;
+	t_texture	*w;
+	t_texture	*s;
+	t_texture	*e;
+	t_texture	*image;
+	t_texture	*wallt;
+	double	cameraX;
+	int		hit;
+	int		lineheight;
+	int		drawstart;
+	int		drawend;
+	int		texx;
+	int		texy;
+	int		texheight;
+	int		color;
+	double	olddirx;
+	double	oldplanex;
 }	t_cub;
 
 
@@ -140,7 +168,7 @@ int			check_map(t_cub *data);
 int			ft_check_flood_fill(t_cub *data);
 int			check_walls(t_cub *data, int y, int x);
 
-void		init_key();
+void	init_key(t_cub *data);
 void	init_mlx(t_cub *data);
 void		init_data(t_cub *data);
 
@@ -164,12 +192,12 @@ void		rotate_left(t_cub *data);
 void		rotate_right(t_cub *data);
 
 double		calculate_perpendicular_distance(t_cub *data);
-int			detect_wall_hit(t_cub *data);
+void detect_wall_hit(t_cub *data);
 double		absValue(double x);
 void		calculate_ray_direction(t_cub *data, int x);
 void		calculate_initial_step(t_cub *data);
 
-void		draw_wall(t_cub *data, int x, int drawStart, int drawEnd, double wallX, int *texture_data, int lineHeight);
+void		draw_wall(t_cub *data, int x);
 double		calculate_wall_hit_position(t_cub *data, double perpWallDist);
 void		calculate_wall_dimensions(t_cub *data, double perpWallDist, int *lineHeight, int *drawStart, int *drawEnd);
 void		render_wall(t_cub *data, int x);
@@ -181,7 +209,17 @@ int			*select_texture(t_cub *data, double wallX, int *texX);
 
 void		calculations_camera(t_cub *data, char direction);
 void		process_input(t_cub *data);
-int			render(void *param);
 void		start_raycast(t_cub *data);
+
+
+void init_sprite_path(t_cub *data);
+void init_sprite(t_cub *data);
+void *file_to_image(t_cub *data, char *textures_path);
+int **convert_map(char **map, int *rows, int *cols);
+void calculate_map_size(char **map, int *rows, int *cols);
+
+int	arrsize(char **arr);
+void	convert_to_int(t_cub *data);
+void render(t_cub *data);
 
 #endif

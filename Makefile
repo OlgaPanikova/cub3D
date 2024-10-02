@@ -1,7 +1,7 @@
 NAME = cub3D
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 LIBFT = ./LIBFT/libft.a
 
 SRC_DIR = ./src
@@ -28,10 +28,11 @@ SRCS = main.c \
 		$(PARSING_DIR)/parsing_map.c \
 		$(PARSING_DIR)/utils.c \
 		$(PARSING_DIR)/check_map.c \
-		$(RAYCASTING_DIR)/add_texture_key.c \
+		$(RAYCASTING_DIR)/test.c \
+		#$(RAYCASTING_DIR)/add_texture_key.c \
 		$(RAYCASTING_DIR)/clean_win_create_floor_ceiling.c \
 		$(RAYCASTING_DIR)/process_input.c \
-		$(RAYCASTING_DIR)/raycast1.c \
+		#$(RAYCASTING_DIR)/raycast1.c \
 		$(RAYCASTING_DIR)/raycast2.c \
 		$(RAYCASTING_DIR)/raycast3.c \
 		$(RAYCASTING_DIR)/start.c \

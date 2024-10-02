@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:07:22 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 16:57:22 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/02 20:18:56 by lelichik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,41 @@ void	init_data(t_cub *data)
 	data->map = NULL;
 	data->map_width = 0;
 	data->map_height = 0;
-	data->w = screenWidth;
-	data->h = screenHeight;
+	data->wight_screen = screenWidth;
+	data->hight_screen = screenHeight;
 }
 
+void print_world_map(int **worldMap) {
+    int y = 0;
+    int x;
+
+    while (worldMap[y] != NULL) {
+        x = 0;
+        while (worldMap[y][x] != -1) {  // Печатаем до -1
+            printf("%d ", worldMap[y][x]);
+            x++;
+        }
+        printf("\n");
+        y++;
+    }
+}
+
+void print_map(char **map) {
+    int i = 0;
+
+    // Пока текущий указатель (строка) не равен NULL
+    while (map[i] != NULL) {
+        int j = 0;
+
+        // Пока не достигнем конца строки (символ '\0')
+        while (map[i][j] != '\0') {
+            printf("[%c] ", map[i][j]);
+            j++;
+        }
+        printf("\n"); // Переход на новую строку после вывода всей строки
+        i++;
+    }
+}
 
 int main(int args, char **argv)
 {
@@ -101,10 +132,18 @@ int main(int args, char **argv)
 		return (1);
 	}
 	rgb_to_hex(data); // цвета приводим к одному значению!!
-	// printf("H = %f\n", data->player.posX);
-	// printf("W = %f\n", data->player.posY);
+	init_texture(data);
+	printf("HELLO\n");
 	calculations_camera(data, data->direction);
+	print_map(data->map);
+	printf("HELLO1\n");
 	start_raycast(data);
+	printf("HELLO22\n");
+	mlx_hook(data->win_ptr, 2, 1L << 0, key_hook, data);
+    // mlx_hook(win_ptr, 6, 0, mouse_move, data);
+	mlx_hook(data->win_ptr, 17, 0L, close_window, data); // добавить очистку памяти 
+	// mlx_loop_hook(data->mlx_ptr, render, data);
+	mlx_loop(data->mlx_ptr);
 
 	// printf("North texture: %s\n", data.north_texture);
 	// printf("South texture: %s\n", data.south_texture);
