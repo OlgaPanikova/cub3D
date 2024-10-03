@@ -6,7 +6,7 @@
 /*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 19:36:26 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/02 20:08:13 by lelichik         ###   ########.fr       */
+/*   Updated: 2024/09/29 17:58:47 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int	is_map_line_valid(const char *line)
 {
 	while (*line != '\0' && *line != '\n')
 	{
-		if (*line != '1' && *line != '0' && *line != 'N' && *line != 'S' && *line != 'E' && *line != 'W' && *line != ' ')
+		if (*line != '1' && *line != '0' && *line != 'N' && *line != 'S'
+			&& *line != 'E' && *line != 'W' && *line != ' ')
 			return (0);
 		line++;
 	}

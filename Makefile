@@ -24,6 +24,7 @@ SRCS = main.c \
 		$(ERROR_FREE_DIR)/error.c \
 		$(ERROR_FREE_DIR)/memory.c \
 		$(PARSING_DIR)/parsing.c \
+		$(PARSING_DIR)/parsing1.c \
 		$(PARSING_DIR)/parsing_2.c \
 		$(PARSING_DIR)/parsing_map.c \
 		$(PARSING_DIR)/utils.c \
@@ -33,6 +34,8 @@ SRCS = main.c \
 		$(RAYCASTING_DIR)/process_input.c \
 		$(RAYCASTING_DIR)/raycast.c \
 		$(RAYCASTING_DIR)/start.c \
+		$(PARSING_DIR)/utils2.c \
+		$(PARSING_DIR)/check_map.c
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 

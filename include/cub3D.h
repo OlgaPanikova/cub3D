@@ -128,8 +128,16 @@ int			parse_texture_line(t_cub *data, char *line);
 int			process_line(t_cub *data, char *line, int *is_map_parsing,
 				int *elements_completed);
 int			parsing_args(t_cub *data, const char *file);
+int		parse_color_line(t_cub *data, char *line);
+int		parse_texture_line(t_cub *data, char *line);
+int		process_line(t_cub *data, char *line, int *is_map_parsing,
+			int *elements_completed);
+int		parsing_args(t_cub *data, const char *file);
+int		open_file(t_cub *data, const char *file);
 
-char		*skip_spaces(char *line);
+int		parse_lines(t_cub *data, int fd);
+void	check_after_map(int fd, t_cub *data);
+
 int			parse_color(t_cub *data, int *color, char *line);
 int			parse_texture(t_cub *data, char **dest, char *line, const char *identifier);
 int			check_texture_files(t_cub *data);
@@ -143,10 +151,13 @@ void		ft_exit(t_cub *data, char *str, int i);
 
 char		*strdup_until_newline(const char *line);
 void 		rgb_to_hex(t_cub *data);
+int			check_texture_extension(const char *filename);
+char		*skip_spaces(char *line);
+int			check_file_extension(const char *filename);
 
-int			check_map(t_cub *data);
+void		check_map(t_cub *data);
 int			ft_check_flood_fill(t_cub *data);
-int			check_walls(t_cub *data, int y, int x);
+void		check_walls(t_cub *data, int y, int x);
 
 void		init_data(t_cub *data);
 void		init_mlx(t_cub *data);

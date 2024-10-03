@@ -6,31 +6,30 @@
 /*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:37:09 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/02 20:21:35 by lelichik         ###   ########.fr       */
+/*   Updated: 2024/09/29 18:43:55 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	validate_player(t_cub *data, int i, size_t j, int *player_found)
+void	validate_player(t_cub *data, int i, size_t j, int *player_found)
 {
 	if (*player_found)
-		return (ft_print_error("Error: Multiple player positions in map\n", 1));
-	data->player.posY = j + 0.5;
-	data->player.posX = i + 0.5;
+		ft_exit(data, "Error\nMultiple player positions in map", 1);
+	data->posX = j + 0.5;
+	data->posY = i + 0.5;
 	data->direction = data->map[i][j];
 	*player_found = 1;
-	return (0);
+
 }
 
-int	check_positions(char pos, char player)
+void	check_positions(t_cub *data, char pos, char player)
 {
 	if (pos != '1' && pos != '0' && pos != player)
-		return (ft_print_error(("Map should be enclosed with walls\n"), 1));
-	return (0);
+		ft_exit(data, "Error\nMap should be enclosed with walls", 1);
 }
 
-int	check_walls(t_cub *data, int y, int x)
+void	check_walls(t_cub *data, int y, int x)
 {
 	while (data->map[y])
 	{
@@ -41,30 +40,26 @@ int	check_walls(t_cub *data, int y, int x)
 				data->map[y][x] = '0';
 			if (data->map[y][x] == '0')
 			{
-				if (y == 0 || y == data->map_height)
-					return (ft_print_error(("Map should be enclosed with walls\n"), 1));
-				if (check_positions(data->map[y - 1][x], data->direction) != 0)
-					return (1);
-				if (check_positions(data->map[y + 1][x], data->direction) != 0)
-					return (1);
-				if (check_positions(data->map[y][x - 1], data->direction) != 0)
-					return (1);
-				if (check_positions(data->map[y][x + 1], data->direction) != 0)
-					return (1);
+				if (y == 0 || y == data->map_height - 1)
+					ft_exit(data,
+						"Error\nMap should be enclosed with walls", 1);
+				check_positions(data, data->map[y - 1][x], data->direction);
+				check_positions(data, data->map[y + 1][x], data->direction);
+				check_positions(data, data->map[y][x - 1], data->direction);
+				check_positions(data, data->map[y][x + 1], data->direction);
 			}
 			x++;
 		}
 		y++;
 	}
-	return (0);
 }
 
-int	check_map(t_cub *data)
+void	check_map(t_cub *data)
 {
 	int		i;
 	int		player_found;
 	size_t	j;
-	size_t len;
+	size_t	len;
 
 	i = 0;
 	player_found = 0;
@@ -74,16 +69,15 @@ int	check_map(t_cub *data)
 		len = ft_strlen(data->map[i]);
 		while (j < len)
 		{
-			if (data->map[i][j] == 'N' || data->map[i][j] == 'W' || data->map[i][j] == 'E' || data->map[i][j] == 'S')
+			if (data->map[i][j] == 'N' || data->map[i][j] == 'W'
+				|| data->map[i][j] == 'E' || data->map[i][j] == 'S')
 			{
-				if (validate_player(data, i, j, &player_found))
-					return (1);
+				validate_player(data, i, j, &player_found);
 			}
 			j++;
 		}
 		i++;
 	}
 	if (!player_found)
-		return (ft_print_error("Error: No player position in map\n", 1));
-	return (0);
+		ft_exit(data, "Error\nNo player position in map", 1);
 }

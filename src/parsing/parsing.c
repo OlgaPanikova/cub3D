@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 21:18:05 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 16:54:54 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/09/29 19:39:56 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,6 @@
 //         i++;
 //     }
 // }
-
-
-int	check_file_extension(const char *filename)
-{
-	const char	*ext;
-	size_t		len_filename;
-	size_t		len_ext;
-
-	ext = ".cub";
-	len_filename = ft_strlen(filename);
-	len_ext = ft_strlen(ext);
-
-	if (len_filename <= len_ext)
-		return (0);
-	return (ft_strncmp(filename + len_filename - len_ext, ext, len_ext) == 0);
-}
 
 int	parse_color_line(t_cub *data, char *line)
 {
@@ -81,14 +65,15 @@ int	parse_texture_line(t_cub *data, char *line)
 
 int	check_elements_completed(t_cub *data)
 {
-	if (data->north_texture && data->south_texture && data->west_texture &&
-		data->east_texture && data->floor_color[0] != -1
+	if (data->north_texture && data->south_texture && data->west_texture
+		&& data->east_texture && data->floor_color[0] != -1
 		&& data->ceiling_color[0] != -1)
 		return (1);
 	return (0);
 }
 
-int	process_line(t_cub *data, char *line, int *is_map_parsing, int *elements_completed)
+int	process_line(t_cub *data, char *line, int *is_map_parsing,
+	int *elements_completed)
 {
 	if (*is_map_parsing)
 	{
@@ -107,10 +92,13 @@ int	process_line(t_cub *data, char *line, int *is_map_parsing, int *elements_com
 		|| strchr(line, 'S') || strchr(line, 'E') || strchr(line, 'W'))
 	{
 		if (!*elements_completed)
-			return (ft_print_error("Error: Map found before completing textures and colors\n", 1));
+			ft_exit(data, "Error\nThe map was announced before all data", 1);
 		*is_map_parsing = 1;
 		return (process_line(data, line, is_map_parsing, elements_completed));
 	}
+	if (!is_map_line_valid(line))
+		ft_exit(data,
+			"Error\nIndependent lines contain unnecessary information", 1);
 	return (0);
 }
 
@@ -118,78 +106,24 @@ int	process_line(t_cub *data, char *line, int *is_map_parsing, int *elements_com
 int	parsing_args(t_cub *data, const char *file)
 {
 	int		fd;
-	char	*line;
-	int		is_map_parsing = 0;
-	int		elements_completed = 0;
 
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		return (ft_print_error("Error opening file\n", 1));
-	line = get_next_line(fd);
-	while (line != NULL)
+	fd = open_file(data, file);
+	if (parse_lines(data, fd) != 0)
 	{
-		if (is_map_parsing && (*line == '\0' || *line == '\n' || skip_spaces(line)[0] == '\0'))
-			break;
-		if (process_line(data, line, &is_map_parsing, &elements_completed) != 0)
-		{
-			free(line);
-			close(fd);
-			return (1);
-		}
-		free(line);
-		line = get_next_line(fd);
-	}
-	if (line != NULL)
-		free(line);
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		if (*line == '\0' || *line == '\n' || skip_spaces(line)[0] == '\0')
-		{
-			free(line);
-			line = get_next_line(fd);
-			continue ;
-		}
-		free(line);
 		close(fd);
-		return (ft_print_error("Error\nThere should be nothing after the map\n", 1));
+		return (1);
 	}
-	if (line != NULL)
-		free(line);
-
+	check_after_map(fd, data);
+	close(fd);
 	if (check_texture_files(data) != 0)
-	{
-		close(fd);
 		return (1);
-	}
-	/*
-	if (check_map_borders(data) != 0 || check_player_position(data) != 0)
+	if (data->map)
 	{
-		free_data(data);
-		close(fd);
-		return (1);
-	}
-	*/
-
-
-	if(data->map)
-	{
-		// print_map(data->map);
-		if (check_map(data) != 0)
-		{
-			close(fd);
-			return (1);
-		}
+		print_map(data->map);
+		check_map(data);
 	}
 	else
-	{
-		printf("map not be\n");
-		close(fd);
-		return (1);
-	}
-
+		ft_exit(data, "Error\ngame map is missing", 1);
 	check_walls(data, 0, 0);
-
-	close(fd);
 	return (0);
 }
