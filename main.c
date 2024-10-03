@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:07:22 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/03 17:17:46 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/03 20:17:22 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,18 @@ void	init_data(t_cub *data)
 	data->hight_screen = screenHeight;
 }
 
+int	mouse_move(int x, int y, t_cub *data)
+{
+	mlx_mouse_hide();
+	mlx_mouse_get_pos(data->win_ptr, &x, &y);
+	if (x > data->wight_screen / 2)
+		key_hook(124, data);
+	if (x < data->wight_screen / 2)
+		key_hook(123, data);
+	mlx_mouse_move(data->win_ptr, data->wight_screen / 2, y / 2);
+	return (0); 
+}
+
 int main(int args, char **argv)
 {
 	t_cub	*data;
@@ -81,7 +93,8 @@ int main(int args, char **argv)
 	calculations_camera(data, data->direction);
 	start_raycast(data);
 	mlx_hook(data->win_ptr, 2, 1L << 0, key_hook, data);
-	mlx_hook(data->win_ptr, 17, 0L, close_window, data); // добавить очистку памяти 
+	mlx_hook(data->win_ptr, 6, 1L << 6, mouse_move, data);
+	mlx_hook(data->win_ptr, 17, 0L, close_window, data);
 	mlx_loop(data->mlx_ptr);
 	free_data(data);
 	// system ("leaks cub3D");

@@ -6,44 +6,11 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 17:47:39 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/03 17:41:38 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/03 20:05:21 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-void	calculations_camera(t_cub *data, char direction)
-{
-	if (direction == 'N')
-	{
-		data->player.dirY = 0;
-		data->player.dirX = -1;
-		data->player.planeY = 0.66;
-		data->player.planeX = 0;
-	}
-	else if (direction == 'S') // Смотрит на юг
-	{
-		data->player.dirY = 0;
-		data->player.dirX = 1;
-		data->player.planeY = -0.66;
-		data->player.planeX = 0;
-	}
-	else if (direction == 'W') // Смотрит на запад
-	{
-		data->player.dirY = -1;
-		data->player.dirX = 0;
-		data->player.planeY = 0;
-		data->player.planeX = -0.66;
-	}
-	else if (direction == 'E') // Смотрит на восток
-	{
-		data->player.dirY = 1;
-		data->player.dirX = 0;
-		data->player.planeY = 0;
-		data->player.planeX = 0.66;
-	}
-}
-
 
 int key_hook(int keycode, void *param)
 {

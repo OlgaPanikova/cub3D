@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/03 17:49:49 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/03 20:05:35 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,15 +128,15 @@ int			parse_texture_line(t_cub *data, char *line);
 int			process_line(t_cub *data, char *line, int *is_map_parsing,
 				int *elements_completed);
 int			parsing_args(t_cub *data, const char *file);
-int		parse_color_line(t_cub *data, char *line);
-int		parse_texture_line(t_cub *data, char *line);
-int		process_line(t_cub *data, char *line, int *is_map_parsing,
-			int *elements_completed);
-int		parsing_args(t_cub *data, const char *file);
-int		open_file(t_cub *data, const char *file);
+int			parse_color_line(t_cub *data, char *line);
+int			parse_texture_line(t_cub *data, char *line);
+int			process_line(t_cub *data, char *line, int *is_map_parsing,
+				int *elements_completed);
+int			parsing_args(t_cub *data, const char *file);
+int			open_file(t_cub *data, const char *file);
 
-int		parse_lines(t_cub *data, int fd);
-void	check_after_map(int fd, t_cub *data);
+int			parse_lines(t_cub *data, int fd);
+void		check_after_map(int fd, t_cub *data);
 
 int			parse_color(t_cub *data, int *color, char *line);
 int			parse_texture(t_cub *data, char **dest, char *line, const char *identifier);
@@ -187,7 +187,9 @@ void		init_texture(t_cub *data);
 void		initialize_texture_addresses(t_cub *data);
 int			close_window(void *param);
 int			key_hook(int keycode, void *param);
+
 void		calculations_camera(t_cub *data, char direction);
+void		calculations_camera2(t_cub *data, char direction);
 
 void		free_textures_on_error(t_cub *data);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:37:09 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 18:43:55 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/03 18:00:01 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	validate_player(t_cub *data, int i, size_t j, int *player_found)
 {
 	if (*player_found)
 		ft_exit(data, "Error\nMultiple player positions in map", 1);
-	data->posX = j + 0.5;
-	data->posY = i + 0.5;
+	data->player.posY = j + 0.5;
+	data->player.posX = i + 0.5;
 	data->direction = data->map[i][j];
 	*player_found = 1;
 

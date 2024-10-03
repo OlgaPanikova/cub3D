@@ -6,28 +6,11 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 21:18:05 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 19:39:56 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:59:04 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-// void print_map(char **map) {
-//     int i = 0;
-
-//     // Пока текущий указатель (строка) не равен NULL
-//     while (map[i] != NULL) {
-//         int j = 0;
-
-//         // Пока не достигнем конца строки (символ '\0')
-//         while (map[i][j] != '\0') {
-//             printf("[%c] ", map[i][j]);
-//             j++;
-//         }
-//         printf("\n"); // Переход на новую строку после вывода всей строки
-//         i++;
-//     }
-// }
 
 int	parse_color_line(t_cub *data, char *line)
 {
@@ -119,7 +102,7 @@ int	parsing_args(t_cub *data, const char *file)
 		return (1);
 	if (data->map)
 	{
-		print_map(data->map);
+		// print_map(data->map);
 		check_map(data);
 	}
 	else

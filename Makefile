@@ -28,14 +28,15 @@ SRCS = main.c \
 		$(PARSING_DIR)/parsing_2.c \
 		$(PARSING_DIR)/parsing_map.c \
 		$(PARSING_DIR)/utils.c \
+		$(PARSING_DIR)/utils2.c \
 		$(PARSING_DIR)/check_map.c \
 		$(RAYCASTING_DIR)/add_texture_key.c \
 		$(RAYCASTING_DIR)/create_floor_ceiling.c \
 		$(RAYCASTING_DIR)/process_input.c \
 		$(RAYCASTING_DIR)/raycast.c \
 		$(RAYCASTING_DIR)/start.c \
-		$(PARSING_DIR)/utils2.c \
-		$(PARSING_DIR)/check_map.c
+		$(RAYCASTING_DIR)/process_input_rotate.c \
+		$(RAYCASTING_DIR)/calculation_camera.c
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
