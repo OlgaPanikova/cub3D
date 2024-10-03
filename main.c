@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:07:22 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/02 20:18:56 by lelichik         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:17:46 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-void	init_key(t_cub *data)
-{
-	t_KeyState	keys;
-
-	keys.up = 0;
-	keys.down = 0;
-	keys.right = 0;
-	keys.left = 0;
-	keys.pov_left = 0;
-	keys.pov_right = 0;
-	keys.data = data;
-	data->keys = &keys;
-}
 
 void	init_mlx(t_cub *data)
 {
@@ -33,15 +19,11 @@ void	init_mlx(t_cub *data)
 
 	mlx_ptr = mlx_init();
 	if	(!mlx_ptr)
-	{
-		printf("Ошибка: не удалось инициализировать MiniLibX\n"); // вызвать функцию ошибки и очистки памяти
-		exit (1);
-	}
+		ft_exit(data, "Error\n Failed to initialize MiniLibX\n", 1);
 	win_ptr = mlx_new_window(mlx_ptr, screenWidth, screenHeight, "Raycaster");
 	if (!win_ptr)
 	{
-		printf("Ошибка: не удалось создать окно\n"); // вызвать функцию ошибки и очистки памяти
-		exit (1);
+		ft_exit(data, "Error\n Failed to initialize MiniLibX\n", 1);
 	}
 	data->mlx_ptr = mlx_ptr;
 	data->win_ptr = win_ptr;
@@ -76,56 +58,19 @@ void	init_data(t_cub *data)
 	data->hight_screen = screenHeight;
 }
 
-void print_world_map(int **worldMap) {
-    int y = 0;
-    int x;
-
-    while (worldMap[y] != NULL) {
-        x = 0;
-        while (worldMap[y][x] != -1) {  // Печатаем до -1
-            printf("%d ", worldMap[y][x]);
-            x++;
-        }
-        printf("\n");
-        y++;
-    }
-}
-
-void print_map(char **map) {
-    int i = 0;
-
-    // Пока текущий указатель (строка) не равен NULL
-    while (map[i] != NULL) {
-        int j = 0;
-
-        // Пока не достигнем конца строки (символ '\0')
-        while (map[i][j] != '\0') {
-            printf("[%c] ", map[i][j]);
-            j++;
-        }
-        printf("\n"); // Переход на новую строку после вывода всей строки
-        i++;
-    }
-}
-
 int main(int args, char **argv)
 {
 	t_cub	*data;
 
 	data = malloc(sizeof(t_cub));
 	if(!data)
-	{
-		printf("Ошибка: не удалось выделить память\n");
-		return (1);
-	}
-
+		return (ft_print_error("Failed to allocate memory\n", 1));
 	if (args != 2)
 		return (ft_print_error("Error arguments\n", 1));
 	if (!check_file_extension(argv[1]))
 		return (ft_print_error("Error: File must have a .cub extension\n", 1));
 	init_data(data);
 	init_mlx(data);
-	init_key(data);
 	if (parsing_args(data, argv[1]) != 0)
 	{
 		free_data(data);
@@ -133,25 +78,12 @@ int main(int args, char **argv)
 	}
 	rgb_to_hex(data); // цвета приводим к одному значению!!
 	init_texture(data);
-	printf("HELLO\n");
 	calculations_camera(data, data->direction);
-	print_map(data->map);
-	printf("HELLO1\n");
 	start_raycast(data);
-	printf("HELLO22\n");
 	mlx_hook(data->win_ptr, 2, 1L << 0, key_hook, data);
-    // mlx_hook(win_ptr, 6, 0, mouse_move, data);
 	mlx_hook(data->win_ptr, 17, 0L, close_window, data); // добавить очистку памяти 
-	// mlx_loop_hook(data->mlx_ptr, render, data);
 	mlx_loop(data->mlx_ptr);
-
-	// printf("North texture: %s\n", data.north_texture);
-	// printf("South texture: %s\n", data.south_texture);
-	// printf("West texture: %s\n", data.west_texture);
-	// printf("East texture: %s\n", data.east_texture);
-	// printf("Floor color: %d,%d,%d\n", data.floor_color[0], data.floor_color[1], data.floor_color[2]);
-	// printf("Ceiling color: %d,%d,%d\n", data.ceiling_color[0], data.ceiling_color[1], data.ceiling_color[2]);
-
 	free_data(data);
+	// system ("leaks cub3D");
 	return (0);
 }

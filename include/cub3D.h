@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lelichik <lelichik@student.42.fr>          +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/02 19:25:52 by lelichik         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:49:49 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,11 @@
 # include <sys/time.h>
 #include <math.h>
 
-# define screenWidth  640 //размеры экрана
-# define screenHeight 480
+# define screenWidth  840
+# define screenHeight 680
 
 # define MOVE_SPEED 0.11
 # define ROT_SPEED 0.07
-
-#define COS_ROT 0.996
-#define SIN_ROT 0.087
 
 #define texWidth 100
 #define texHeight 100
@@ -50,17 +47,6 @@ typedef struct s_texture
 	int		height;
 }				t_texture;
 
-typedef struct s_key
-{
-	int				up;
-	int				down;
-	int				right;
-	int				left;
-	int				pov_left;
-	int				pov_right;
-	struct s_cub	*data;
-} t_KeyState;
-
 typedef struct s_player
 {
 	double	posX;
@@ -73,6 +59,8 @@ typedef struct s_player
 	double	rotSpeed;
 	double	newX;
 	double	newY;
+	double	olddirx;
+	double	oldplanex;
 } t_player;
 
 typedef struct s_ray
@@ -90,6 +78,8 @@ typedef struct s_ray
 	int		side;
 	double	perpWallDist;
 	double	wallx;
+	double	cameraX;
+	int		hit;
 } t_ray;
 
 typedef struct s_cub
@@ -98,43 +88,33 @@ typedef struct s_cub
 	char			*south_texture;
 	char			*west_texture;
 	char			*east_texture;
-	int				floor_color[3]; // RGB
-	int				ceiling_color[3]; // RGB
+	int				floor_color[3];
+	int				ceiling_color[3];
 	unsigned int	hex_floor;
 	unsigned int	hex_ceiling;
 	char			**map;
 	int				map_width;
 	int				map_height;
-	char			direction;   // Направление игрока (N, W, E, S)
+	char			direction;
 	void			*mlx_ptr;
 	void			*win_ptr;
-	t_KeyState		*keys;
-	t_player		player;
-	t_ray			ray;
-	void			*img;
-	int				*img_data;
 	int				wight_screen;
 	int				hight_screen;
-	void			*textures[4];
-	char			*textures_path[4];
-	int**			worldMap;
-	t_texture	*n;
-	t_texture	*w;
-	t_texture	*s;
-	t_texture	*e;
-	t_texture	*image;
-	t_texture	*wallt;
-	double	cameraX;
-	int		hit;
-	int		lineheight;
-	int		drawstart;
-	int		drawend;
-	int		texx;
-	int		texy;
-	int		texheight;
-	int		color;
-	double	olddirx;
-	double	oldplanex;
+	int				lineheight;
+	int				drawstart;
+	int				drawend;
+	int				texx;
+	int				texy;
+	int				texheight;
+	int				color;
+	t_player		player;
+	t_ray			ray;
+	t_texture		*n;
+	t_texture		*w;
+	t_texture		*s;
+	t_texture		*e;
+	t_texture		*image;
+	t_texture		*wallt;
 }	t_cub;
 
 
@@ -168,58 +148,36 @@ int			check_map(t_cub *data);
 int			ft_check_flood_fill(t_cub *data);
 int			check_walls(t_cub *data, int y, int x);
 
-void	init_key(t_cub *data);
-void	init_mlx(t_cub *data);
 void		init_data(t_cub *data);
+void		init_mlx(t_cub *data);
 
-int			close_window(void *param);
-int			key_hook(int keycode, void *param);
-int			key_release_hook(int keycode, void *param);
-void		*file_to_image(t_cub *data, char *textures_path);
-void		init_texture(t_cub *data);
+void		start_raycast(t_cub *data);
+void		render(t_cub *data);
+void		calculate_ray_direction(t_cub *data, int x);
 
-void		draw_ceiling(t_cub *data);
-void		draw_floor(t_cub *data);
-void		draw_floor_and_ceiling(t_cub *data);
-void		clear_image(t_cub *data);
+void		calculate_initial_step(t_cub *data);
+void		detect_wall_hit(t_cub *data);
+void		calculate_wall_rendering(t_cub *data);
+void		side_of_the_wall(t_cub *data);
+void		draw_wall(t_cub *data, int x);
 
-int			is_space_free(t_cub *data);
 void		move_forward(t_cub *data);
 void		move_backward(t_cub *data);
 void		move_right(t_cub *data);
 void		move_left(t_cub *data);
-void		rotate_left(t_cub *data);
 void		rotate_right(t_cub *data);
+void		rotate_left(t_cub *data);
 
-double		calculate_perpendicular_distance(t_cub *data);
-void detect_wall_hit(t_cub *data);
-double		absValue(double x);
-void		calculate_ray_direction(t_cub *data, int x);
-void		calculate_initial_step(t_cub *data);
+void		draw_floor_and_ceiling(t_cub *data);
+void		draw_floor(t_cub *data);
+void		draw_ceiling(t_cub *data);
 
-void		draw_wall(t_cub *data, int x);
-double		calculate_wall_hit_position(t_cub *data, double perpWallDist);
-void		calculate_wall_dimensions(t_cub *data, double perpWallDist, int *lineHeight, int *drawStart, int *drawEnd);
-void		render_wall(t_cub *data, int x);
-
-void		render_wall_slice(t_cub *data, int x, int drawStart, int drawEnd, int texX, double texPos, double step, int *texture_data);
-double		calculate_texture_step(int lineHeight);
-double		calculate_initial_texture_position(int drawStart, int lineHeight, int sHeight);
-int			*select_texture(t_cub *data, double wallX, int *texX);
-
+void		init_texture(t_cub *data);
+void		initialize_texture_addresses(t_cub *data);
+int			close_window(void *param);
+int			key_hook(int keycode, void *param);
 void		calculations_camera(t_cub *data, char direction);
-void		process_input(t_cub *data);
-void		start_raycast(t_cub *data);
 
-
-void init_sprite_path(t_cub *data);
-void init_sprite(t_cub *data);
-void *file_to_image(t_cub *data, char *textures_path);
-int **convert_map(char **map, int *rows, int *cols);
-void calculate_map_size(char **map, int *rows, int *cols);
-
-int	arrsize(char **arr);
-void	convert_to_int(t_cub *data);
-void render(t_cub *data);
+void		free_textures_on_error(t_cub *data);
 
 #endif

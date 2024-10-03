@@ -3,15 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 21:28:16 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/28 22:51:56 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:37:02 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "cub3D.h"
+
+void	free_textures_on_error(t_cub *data)
+{
+	if (data->n && data->n->img)
+		mlx_destroy_image(data->mlx_ptr, data->n->img);
+	if (data->w && data->w->img)
+		mlx_destroy_image(data->mlx_ptr, data->w->img);
+	if (data->s && data->s->img)
+		mlx_destroy_image(data->mlx_ptr, data->s->img);
+	if (data->e && data->e->img)
+		mlx_destroy_image(data->mlx_ptr, data->e->img);
+	if (data->n)
+		free(data->n);
+	if (data->w)
+		free(data->w);
+	if (data->s)
+		free(data->s);
+	if (data->e)
+		free(data->e);
+}
 
 void	free_data(t_cub *data)
 {
@@ -25,6 +45,7 @@ void	free_data(t_cub *data)
 		free(data->west_texture);
 	if (data->east_texture)
 		free(data->east_texture);
+	free_textures_on_error(data);
 	if (data->map)
 	{
 		i = 0;
@@ -35,4 +56,5 @@ void	free_data(t_cub *data)
 		}
 		free(data->map);
 	}
+	free(data);
 }
