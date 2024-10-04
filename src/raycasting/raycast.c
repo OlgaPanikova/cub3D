@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:40:51 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/04 13:47:29 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:20:03 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	draw_wall(t_cub *data, int x)
 	int	y;
 
 	data->texx = (int)(data->ray.wallx * (double)data->wallt->width);
-	if ((data->ray.side == 0 && data->ray.rayDirX > 0) \
-		|| (data->ray.side == 1 && data->ray.rayDirY < 0))
+	if ((data->ray.side == 0 && data->ray.ray_dir_x > 0) \
+		|| (data->ray.side == 1 && data->ray.ray_dir_y < 0))
 		data->texx = data->wallt->width - data->texx - 1;
-	data->texheight = (int)(data->hight_screen / data->ray.perpWallDist);
+	data->texheight = (int)(data->hight_screen / data->ray.perp_wall_dist);
 	data->drawstart = -data->texheight / 2 + data->hight_screen / 2;
 	if (data->drawstart < 0)
 		data->drawstart = 0;
@@ -43,14 +43,14 @@ void	side_of_the_wall(t_cub *data)
 {
 	if (data->ray.side == 0)
 	{
-		if (data->ray.rayDirX > 0)
+		if (data->ray.ray_dir_x > 0)
 			data->wallt = data->e;
 		else
 			data->wallt = data->w;
 	}
 	else
 	{
-		if (data->ray.rayDirY > 0)
+		if (data->ray.ray_dir_y > 0)
 			data->wallt = data->n;
 		else
 			data->wallt = data->s;
@@ -60,10 +60,10 @@ void	side_of_the_wall(t_cub *data)
 void	calculate_wall_rendering(t_cub *data)
 {
 	if (data->ray.side == 0)
-		data->ray.perpWallDist = (data->ray.sideDistX - data->ray.deltaDistX);
+		data->ray.perp_wall_dist = (data->ray.side_dist_x - data->ray.delta_dist_x);
 	else
-		data->ray.perpWallDist = (data->ray.sideDistY - data->ray.deltaDistY);
-	data->lineheight = (int)(data->hight_screen / data->ray.perpWallDist);
+		data->ray.perp_wall_dist = (data->ray.side_dist_y - data->ray.delta_dist_y);
+	data->lineheight = (int)(data->hight_screen / data->ray.perp_wall_dist);
 	data->drawstart = -data->lineheight / 2 + data->hight_screen / 2;
 	if (data->drawstart < 0)
 		data->drawstart = 0;
@@ -73,11 +73,11 @@ void	calculate_wall_rendering(t_cub *data)
 	if (data->ray.side == 1)
 		data->color = data->color / 2;
 	if (data->ray.side == 0)
-		data->ray.wallx = data->player.pos_y + data->ray.perpWallDist
-			* data->ray.rayDirY;
+		data->ray.wallx = data->player.pos_y + data->ray.perp_wall_dist
+			* data->ray.ray_dir_y;
 	else
-		data->ray.wallx = data->player.pos_x + data->ray.perpWallDist
-			* data->ray.rayDirX;
+		data->ray.wallx = data->player.pos_x + data->ray.perp_wall_dist
+			* data->ray.ray_dir_x;
 	data->ray.wallx -= floor(data->ray.wallx);
 }
 
@@ -85,47 +85,47 @@ void	detect_wall_hit(t_cub *data)
 {
 	while (data->ray.hit == 0)
 	{
-		if (data->ray.sideDistX < data->ray.sideDistY)
+		if (data->ray.side_dist_x < data->ray.side_dist_y)
 		{
-			data->ray.sideDistX += data->ray.deltaDistX;
-			data->ray.mapX += data->ray.stepX;
+			data->ray.side_dist_x += data->ray.delta_dist_x;
+			data->ray.map_x += data->ray.step_x;
 			data->ray.side = 0;
 		}
 		else
 		{
-			data->ray.sideDistY += data->ray.deltaDistY;
-			data->ray.mapY += data->ray.stepY;
+			data->ray.side_dist_y += data->ray.delta_dist_y;
+			data->ray.map_y += data->ray.step_y;
 			data->ray.side = 1;
 		}
-		if (data->map[data->ray.mapX][data->ray.mapY] == '1')
+		if (data->map[data->ray.map_x][data->ray.map_y] == '1')
 			data->ray.hit = 1;
 	}
 }
 
 void	calculate_initial_step(t_cub *data)
 {
-	if (data->ray.rayDirX < 0)
+	if (data->ray.ray_dir_x < 0)
 	{
-		data->ray.stepX = -1;
-		data->ray.sideDistX = (data->player.pos_x - data->ray.mapX)
-			* data->ray.deltaDistX;
+		data->ray.step_x = -1;
+		data->ray.side_dist_x = (data->player.pos_x - data->ray.map_x)
+			* data->ray.delta_dist_x;
 	}
 	else
 	{
-		data->ray.stepX = 1;
-		data->ray.sideDistX = (data->ray.mapX + 1.0 - data->player.pos_x)
-			* data->ray.deltaDistX;
+		data->ray.step_x = 1;
+		data->ray.side_dist_x = (data->ray.map_x + 1.0 - data->player.pos_x)
+			* data->ray.delta_dist_x;
 	}
-	if (data->ray.rayDirY < 0)
+	if (data->ray.ray_dir_y < 0)
 	{
-		data->ray.stepY = -1;
-		data->ray.sideDistY = (data->player.pos_y - data->ray.mapY)
-			* data->ray.deltaDistY;
+		data->ray.step_y = -1;
+		data->ray.side_dist_y = (data->player.pos_y - data->ray.map_y)
+			* data->ray.delta_dist_y;
 	}
 	else
 	{
-		data->ray.stepY = 1;
-		data->ray.sideDistY = (data->ray.mapY + 1.0 - data->player.pos_y)
-			* data->ray.deltaDistY;
+		data->ray.step_y = 1;
+		data->ray.side_dist_y = (data->ray.map_y + 1.0 - data->player.pos_y)
+			* data->ray.delta_dist_y;
 	}
 }

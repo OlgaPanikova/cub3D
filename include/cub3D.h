@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 13:51:55 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:20:21 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,34 +53,34 @@ typedef struct s_player
 	double	pos_y;
 	double	dir_x;
 	double	dir_y;
-	double	planeX;
-	double	planeY;
-	double	moveSpeed;
-	double	rotSpeed;
-	double	newX;
-	double	newY;
+	double	plane_x;
+	double	plane_y;
+	double	move_speed;
+	double	rot_speed;
+	//double	new_x;
+	//double	new_y;
 	double	olddirx;
 	double	oldplanex;
-} t_player;
+}	t_player;
 
 typedef struct s_ray
 {
-	double	rayDirX;
-	double	rayDirY;
-	double	deltaDistX;
-	double	deltaDistY;
-	double	sideDistX;
-	double	sideDistY;
-	int		mapX;
-	int		mapY;
-	int		stepX;
-	int		stepY;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	int		map_x;
+	int		map_y;
+	int		step_x;
+	int		step_y;
 	int		side;
-	double	perpWallDist;
+	double	perp_wall_dist;
 	double	wallx;
-	double	cameraX;
+	double	camera_x;
 	int		hit;
-} t_ray;
+}	t_ray;
 
 typedef struct s_cub
 {

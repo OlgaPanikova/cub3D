@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:07:22 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 13:52:45 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:02:35 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void	init_data(t_cub *data)
 	data->player.pos_y = 0;
 	data->player.dir_x = 0;
 	data->player.dir_y = 0;
-	data->player.planeX = 0;
-	data->player.planeY = 0;
-	data->player.moveSpeed = MOVE_SPEED;
-	data->player.rotSpeed = ROT_SPEED;
+	data->player.plane_x = 0;
+	data->player.plane_y = 0;
+	data->player.move_speed = MOVE_SPEED;
+	data->player.rot_speed = ROT_SPEED;
 	i = -1;
 	while (++i < 3)
 	{
