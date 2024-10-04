@@ -1,10 +1,11 @@
 NAME = cub3D
-
+NAMEB = cub3D_bonus
 CC = cc
 CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 LIBFT = ./LIBFT/libft.a
 
 SRC_DIR = ./src
+SRC_B_DIR = ./srcb
 GNL_DIR = ./gnl
 INC_DIR = ./include
 LIBFT_DIR = ./LIBFT
@@ -16,7 +17,12 @@ ERROR_FREE_DIR = $(SRC_DIR)/error_free
 PARSING_DIR = $(SRC_DIR)/parsing
 RAYCASTING_DIR = $(SRC_DIR)/raycasting
 
+ERROR_FREE_DIR_B = $(SRC_B_DIR)/error_free_b
+PARSING_DIR_B = $(SRC_B_DIR)/parsing_b
+RAYCASTING_DIR_B = $(SRC_B_DIR)/raycasting_b
+
 OBJS_DIR = ./objs
+OBJS_DIR_B = ./objsb
 
 SRCS = main.c \
 		$(GNL_DIR)/get_next_line.c \
@@ -38,7 +44,29 @@ SRCS = main.c \
 		$(RAYCASTING_DIR)/process_input_rotate.c \
 		$(RAYCASTING_DIR)/calculation_camera.c
 
+SRCS_B = main_bonus.c \
+		$(GNL_DIR)/get_next_line.c \
+		$(GNL_DIR)/get_next_line_utils.c \
+		$(ERROR_FREE_DIR_B)/error_bonus.c \
+		$(ERROR_FREE_DIR_B)/memory_bonus.c \
+		$(PARSING_DIR_B)/parsing_bonus.c \
+		$(PARSING_DIR_B)/parsing1_bonus.c \
+		$(PARSING_DIR_B)/parsing_2_bonus.c \
+		$(PARSING_DIR_B)/parsing_map_bonus.c \
+		$(PARSING_DIR_B)/utils_bonus.c \
+		$(PARSING_DIR_B)/utils2_bonus.c \
+		$(PARSING_DIR_B)/check_map_bonus.c \
+		$(RAYCASTING_DIR_B)/add_texture_key_bonus.c \
+		$(RAYCASTING_DIR_B)/create_floor_ceiling_bonus.c \
+		$(RAYCASTING_DIR_B)/process_input_bonus.c \
+		$(RAYCASTING_DIR_B)/raycast_bonus.c \
+		$(RAYCASTING_DIR_B)/start_bonus.c \
+		$(RAYCASTING_DIR_B)/process_input_rotate_bonus.c \
+		$(RAYCASTING_DIR_B)/calculation_camera_bonus.c \
+		$(RAYCASTING_DIR_B)/animal_bonus.c
+
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
+OBJS_B = $(SRCS_B:%.c=$(OBJS_DIR_B)/%.o)
 
 INCLUDES = -I$(INC_DIR) -I$(GNL_DIR) -I$(LIBFT_DIR)
 
@@ -48,11 +76,23 @@ $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBSMLX) -L$(LIBFT_DIR) -lft -o $(NAME)
 
 $(OBJS_DIR)/%.o: %.c
-	@mkdir -p $(dir $@)  # Создаём поддиректории, если их ещё нет
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -Imlx -c $< -o $@
 
 $(OBJS_DIR):
 	mkdir -p $(OBJS_DIR)
+
+bonus: $(OBJS_DIR_B) $(NAMEB)
+
+$(NAMEB): $(OBJS_B) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS_B) $(LIBSMLX) -L$(LIBFT_DIR) -lft -o $(NAMEB)
+
+$(OBJS_DIR_B)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INCLUDES) -Imlx -c $< -o $@
+
+$(OBJS_DIR_B):
+	mkdir -p $(OBJS_DIR_B)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
@@ -61,14 +101,14 @@ $(LIBFTAM):
 	@$(MAKE) -C $(LIBFTMLX)
 
 clean:
-	rm -rf $(OBJS_DIR)
+	rm -rf $(OBJS_DIR) $(OBJS_DIR_B)
 	make clean -C $(LIBFT_DIR)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -rf $(NAME) $(NAMEB)
 	make fclean -C $(LIBFT_DIR)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
 

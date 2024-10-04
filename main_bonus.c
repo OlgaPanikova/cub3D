@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:07:22 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 16:29:59 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:01:07 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ void	init_mlx(t_cub *data)
 	}
 	data->mlx_ptr = mlx_ptr;
 	data->win_ptr = win_ptr;
+}
+
+void	init_hand(t_cub *data)
+{
+	data->hand1 = "./textures/hand1.xpm";
+	data->hand2 = "./textures/hand2.xpm";
+	data->is_moving = 1;
 }
 
 void	init_data(t_cub *data)
@@ -58,6 +65,18 @@ void	init_data(t_cub *data)
 	data->hight_screen = SCREEN_HEIGHT;
 }
 
+int	mouse_move(int x, int y, t_cub *data)
+{
+	mlx_mouse_hide();
+	mlx_mouse_get_pos(data->win_ptr, &x, &y);
+	if (x > data->wight_screen / 2)
+		key_hook(124, data);
+	if (x < data->wight_screen / 2)
+		key_hook(123, data);
+	mlx_mouse_move(data->win_ptr, data->wight_screen / 2, y / 2);
+	return (0);
+}
+
 int	main(int args, char **argv)
 {
 	t_cub	*data;
@@ -75,9 +94,12 @@ int	main(int args, char **argv)
 		return (free_data(data), 1);
 	rgb_to_hex(data);
 	init_texture(data);
+	init_hand(data);
 	calculations_camera(data, data->direction);
+	load_player_sprites(data);
 	start_raycast(data);
 	mlx_hook(data->win_ptr, 2, 1L << 0, key_hook, data);
+	mlx_hook(data->win_ptr, 6, 1L << 6, mouse_move, data);
 	mlx_hook(data->win_ptr, 17, 0L, close_window, data);
 	mlx_loop(data->mlx_ptr);
 	free_data(data);

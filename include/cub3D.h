@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 14:24:05 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:03:00 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@
 # define MOVE_SPEED 0.11
 # define ROT_SPEED 0.07
 
-//# define texWidth 100
-//# define texHeight 100
-
 typedef struct s_texture
 {
 	void	*img;
@@ -57,8 +54,6 @@ typedef struct s_player
 	double	plane_y;
 	double	move_speed;
 	double	rot_speed;
-	//double	new_x;
-	//double	new_y;
 	double	olddirx;
 	double	oldplanex;
 }	t_player;
@@ -88,6 +83,8 @@ typedef struct s_cub
 	char			*south_texture;
 	char			*west_texture;
 	char			*east_texture;
+	char			*hand1;
+	char			*hand2;
 	int				floor_color[3];
 	int				ceiling_color[3];
 	unsigned int	hex_floor;
@@ -115,6 +112,12 @@ typedef struct s_cub
 	t_texture		*e;
 	t_texture		*image;
 	t_texture		*wallt;
+	void			*sprites[2];  // Массив спрайтов для анимации
+	int				sprite_index;  // Индекс текущего спрайта
+	int				anim_time;     // Время для переключения анимации
+	int				is_moving;     // Флаг, показывающий, двигается ли игрок
+	int				sprite_width;
+	int				sprite_height;
 }	t_cub;
 
 char		*get_next_line(int fd);
@@ -192,5 +195,9 @@ void		calculations_camera(t_cub *data, char direction);
 void		calculations_camera2(t_cub *data, char direction);
 
 void		free_textures_on_error(t_cub *data);
+
+void	render_player(t_cub *data);
+void	update_player_animation(t_cub *data);
+void	load_player_sprites(t_cub *data);
 
 #endif
