@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 21:18:05 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/03 17:59:04 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:35:43 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int	process_line(t_cub *data, char *line, int *is_map_parsing,
 			"Error\nIndependent lines contain unnecessary information", 1);
 	return (0);
 }
-
 
 int	parsing_args(t_cub *data, const char *file)
 {

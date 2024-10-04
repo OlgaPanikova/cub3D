@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:37:09 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/03 18:00:01 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:35:07 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	validate_player(t_cub *data, int i, size_t j, int *player_found)
 	data->player.posX = i + 0.5;
 	data->direction = data->map[i][j];
 	*player_found = 1;
-
 }
 
 void	check_positions(t_cub *data, char pos, char player)

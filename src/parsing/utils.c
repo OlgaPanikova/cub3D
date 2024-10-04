@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 21:18:05 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 18:03:55 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:42:16 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	check_file_extension(const char *filename)
 	ext = ".cub";
 	len_filename = ft_strlen(filename);
 	len_ext = ft_strlen(ext);
-
 	if (len_filename <= len_ext)
 		return (0);
 	return (ft_strncmp(filename + len_filename - len_ext, ext, len_ext) == 0);
@@ -65,7 +64,6 @@ char	*strdup_until_newline(const char *line)
 	len = 0;
 	while (line[len] != '\n' && line[len] != '\0')
 		len++;
-
 	new_str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new_str)
 		return (NULL);

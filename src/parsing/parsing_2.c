@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 19:36:33 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 18:06:21 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:40:56 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@ char	*parse_single_color(t_cub *data, char *line)
 	return (end);
 }
 
-int	check_texture_file(const char *filename)
+int	check_texture_file(t_cub *data, const char *filename)
 {
 	int	fd;
 
 	if (!check_texture_extension(filename))
-		return (ft_print_error("Error: Invalid texture file format (must be .xpm)\n", 1));
+		ft_exit(data,
+			"Error\nInvalid texture file format (must be .xpm)", 1);
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (ft_print_error("Error: Texture file not found\n", 1));
@@ -40,13 +41,13 @@ int	check_texture_file(const char *filename)
 
 int	check_texture_files(t_cub *data)
 {
-	if (check_texture_file(data->north_texture) != 0)
+	if (check_texture_file(data, data->north_texture) != 0)
 		return (1);
-	if (check_texture_file(data->south_texture) != 0)
+	if (check_texture_file(data, data->south_texture) != 0)
 		return (1);
-	if (check_texture_file(data->west_texture) != 0)
+	if (check_texture_file(data, data->west_texture) != 0)
 		return (1);
-	if (check_texture_file(data->east_texture) != 0)
+	if (check_texture_file(data, data->east_texture) != 0)
 		return (1);
 	return (0);
 }

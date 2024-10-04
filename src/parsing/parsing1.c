@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 19:22:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 19:32:42 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:36:29 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	check_after_map(int fd, t_cub *data)
 		close(fd);
 		ft_exit(data, "Error\nThere should be nothing after the map", 1);
 	}
-
 }
 
 int	parse_lines(t_cub *data, int fd)

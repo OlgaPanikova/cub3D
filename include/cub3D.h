@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/03 20:05:35 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:44:10 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
-#define CUB3D_H
+# define CUB3D_H
 
-#include <stddef.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include "get_next_line.h"
+# include <stddef.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <fcntl.h>
+# include <ctype.h>
+# include "get_next_line.h"
 # include "libft.h"
 # include "mlx.h"
 # include <sys/time.h>
-#include <math.h>
+# include <math.h>
 
 # define screenWidth  840
 # define screenHeight 680
@@ -32,8 +32,8 @@
 # define MOVE_SPEED 0.11
 # define ROT_SPEED 0.07
 
-#define texWidth 100
-#define texHeight 100
+# define texWidth 100
+# define texHeight 100
 
 typedef struct s_texture
 {
@@ -139,9 +139,10 @@ int			parse_lines(t_cub *data, int fd);
 void		check_after_map(int fd, t_cub *data);
 
 int			parse_color(t_cub *data, int *color, char *line);
-int			parse_texture(t_cub *data, char **dest, char *line, const char *identifier);
+int			parse_texture(t_cub *data, char **dest, char *line,
+				const char *identifier);
 int			check_texture_files(t_cub *data);
-int			check_texture_file(const char *filename);
+int			check_texture_file(t_cub *data, const char *filename);
 
 int			is_map_line_valid(const char *line);
 int			parse_map(t_cub *data, char *line);
@@ -150,7 +151,7 @@ void		free_data(t_cub *data);
 void		ft_exit(t_cub *data, char *str, int i);
 
 char		*strdup_until_newline(const char *line);
-void 		rgb_to_hex(t_cub *data);
+void		rgb_to_hex(t_cub *data);
 int			check_texture_extension(const char *filename);
 char		*skip_spaces(char *line);
 int			check_file_extension(const char *filename);
