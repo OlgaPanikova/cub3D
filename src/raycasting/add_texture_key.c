@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   add_texture_key.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 17:47:39 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/03 20:05:21 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:59:13 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int key_hook(int keycode, void *param)
+int	key_hook(int keycode, void *param)
 {
-	t_cub *data = (t_cub *)param;
+	t_cub	*data;
 
+	data = (t_cub *)param;
 	if (keycode == 53)
 	{
 		close_window(data);
@@ -37,8 +38,9 @@ int key_hook(int keycode, void *param)
 
 int	close_window(void *param)
 {
-	t_cub *data = (t_cub *)param;
+	t_cub	*data;
 
+	data = (t_cub *)param;
 	if (data->mlx_ptr && data->win_ptr)
 	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
@@ -48,6 +50,7 @@ int	close_window(void *param)
 	}
 	return (1);
 }
+
 void	initialize_texture_addresses(t_cub *data)
 {
 	data->s->addr = (int *)mlx_get_data_addr(data->s->img, &data->s->bpp, \
@@ -83,4 +86,3 @@ void	init_texture(t_cub *data)
 	initialize_texture_addresses(data);
 	return ;
 }
-

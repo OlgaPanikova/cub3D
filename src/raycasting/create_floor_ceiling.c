@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   create_floor_ceiling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 18:41:36 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/03 17:40:01 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:59:30 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void draw_ceiling(t_cub *data)
+void	draw_ceiling(t_cub *data)
 {
 	int	half_height;
 	int	y;

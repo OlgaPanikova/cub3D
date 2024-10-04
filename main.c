@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:07:22 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/03 20:17:22 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:50:00 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_mlx(t_cub *data)
 	mlx_ptr = mlx_init();
 	if	(!mlx_ptr)
 		ft_exit(data, "Error\n Failed to initialize MiniLibX\n", 1);
-	win_ptr = mlx_new_window(mlx_ptr, screenWidth, screenHeight, "Raycaster");
+	win_ptr = mlx_new_window(mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "Raycaster");
 	if (!win_ptr)
 	{
 		ft_exit(data, "Error\n Failed to initialize MiniLibX\n", 1);
@@ -54,8 +54,8 @@ void	init_data(t_cub *data)
 	data->map = NULL;
 	data->map_width = 0;
 	data->map_height = 0;
-	data->wight_screen = screenWidth;
-	data->hight_screen = screenHeight;
+	data->wight_screen = SCREEN_WIDTH;
+	data->hight_screen = SCREEN_HEIGHT;
 }
 
 int	mouse_move(int x, int y, t_cub *data)
@@ -67,7 +67,7 @@ int	mouse_move(int x, int y, t_cub *data)
 	if (x < data->wight_screen / 2)
 		key_hook(123, data);
 	mlx_mouse_move(data->win_ptr, data->wight_screen / 2, y / 2);
-	return (0); 
+	return (0);
 }
 
 int main(int args, char **argv)

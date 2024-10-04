@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 12:44:10 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:52:02 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@
 # include <sys/time.h>
 # include <math.h>
 
-# define screenWidth  840
-# define screenHeight 680
+# define SCREEN_WIDTH 840
+# define SCREEN_HEIGHT 680
 
 # define MOVE_SPEED 0.11
 # define ROT_SPEED 0.07
 
-# define texWidth 100
-# define texHeight 100
+//# define texWidth 100
+//# define texHeight 100
 
 typedef struct s_texture
 {
