@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 12:52:02 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 13:51:55 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ typedef struct s_texture
 
 typedef struct s_player
 {
-	double	posX;
-	double	posY;
-	double	dirX;
-	double	dirY;
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
 	double	planeX;
 	double	planeY;
 	double	moveSpeed;

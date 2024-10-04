@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:07:22 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 12:50:00 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 13:52:45 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	init_mlx(t_cub *data)
 	void	*win_ptr;
 
 	mlx_ptr = mlx_init();
-	if	(!mlx_ptr)
+	if (!mlx_ptr)
 		ft_exit(data, "Error\n Failed to initialize MiniLibX\n", 1);
 	win_ptr = mlx_new_window(mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "Raycaster");
 	if (!win_ptr)
@@ -37,10 +37,10 @@ void	init_data(t_cub *data)
 	data->south_texture = NULL;
 	data->west_texture = NULL;
 	data->east_texture = NULL;
-	data->player.posX = 0;
-	data->player.posY = 0;
-	data->player.dirX = 0;
-	data->player.dirY = 0;
+	data->player.pos_x = 0;
+	data->player.pos_y = 0;
+	data->player.dir_x = 0;
+	data->player.dir_y = 0;
 	data->player.planeX = 0;
 	data->player.planeY = 0;
 	data->player.moveSpeed = MOVE_SPEED;
@@ -70,12 +70,12 @@ int	mouse_move(int x, int y, t_cub *data)
 	return (0);
 }
 
-int main(int args, char **argv)
+int	main(int args, char **argv)
 {
 	t_cub	*data;
 
 	data = malloc(sizeof(t_cub));
-	if(!data)
+	if (!data)
 		return (ft_print_error("Failed to allocate memory\n", 1));
 	if (args != 2)
 		return (ft_print_error("Error arguments\n", 1));

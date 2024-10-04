@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 18:26:26 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/04 12:57:32 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 13:52:42 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 void	calculate_ray_direction(t_cub *data, int x)
 {
 	data->ray.cameraX = 2 * x / (double)data->wight_screen - 1;
-	data->ray.rayDirX = data->player.dirX + data->player.planeX
+	data->ray.rayDirX = data->player.dir_x + data->player.planeX
 		* data->ray.cameraX;
-	data->ray.rayDirY = data->player.dirY + data->player.planeY
+	data->ray.rayDirY = data->player.dir_y + data->player.planeY
 		* data->ray.cameraX;
-	data->ray.mapX = (int)data->player.posX;
-	data->ray.mapY = (int)data->player.posY;
+	data->ray.mapX = (int)data->player.pos_x;
+	data->ray.mapY = (int)data->player.pos_y;
 	if (data->ray.rayDirX == 0)
 		data->ray.deltaDistX = 1e30;
 	else

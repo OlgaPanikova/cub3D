@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:40:51 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/04 13:00:07 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 13:47:29 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ void	calculate_wall_rendering(t_cub *data)
 	if (data->ray.side == 1)
 		data->color = data->color / 2;
 	if (data->ray.side == 0)
-		data->ray.wallx = data->player.posY + data->ray.perpWallDist
+		data->ray.wallx = data->player.pos_y + data->ray.perpWallDist
 			* data->ray.rayDirY;
 	else
-		data->ray.wallx = data->player.posX + data->ray.perpWallDist
+		data->ray.wallx = data->player.pos_x + data->ray.perpWallDist
 			* data->ray.rayDirX;
 	data->ray.wallx -= floor(data->ray.wallx);
 }
@@ -107,25 +107,25 @@ void	calculate_initial_step(t_cub *data)
 	if (data->ray.rayDirX < 0)
 	{
 		data->ray.stepX = -1;
-		data->ray.sideDistX = (data->player.posX - data->ray.mapX)
+		data->ray.sideDistX = (data->player.pos_x - data->ray.mapX)
 			* data->ray.deltaDistX;
 	}
 	else
 	{
 		data->ray.stepX = 1;
-		data->ray.sideDistX = (data->ray.mapX + 1.0 - data->player.posX)
+		data->ray.sideDistX = (data->ray.mapX + 1.0 - data->player.pos_x)
 			* data->ray.deltaDistX;
 	}
 	if (data->ray.rayDirY < 0)
 	{
 		data->ray.stepY = -1;
-		data->ray.sideDistY = (data->player.posY - data->ray.mapY)
+		data->ray.sideDistY = (data->player.pos_y - data->ray.mapY)
 			* data->ray.deltaDistY;
 	}
 	else
 	{
 		data->ray.stepY = 1;
-		data->ray.sideDistY = (data->ray.mapY + 1.0 - data->player.posY)
+		data->ray.sideDistY = (data->ray.mapY + 1.0 - data->player.pos_y)
 			* data->ray.deltaDistY;
 	}
 }

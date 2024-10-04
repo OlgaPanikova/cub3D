@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:37:09 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 12:35:07 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 13:46:36 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	validate_player(t_cub *data, int i, size_t j, int *player_found)
 {
 	if (*player_found)
 		ft_exit(data, "Error\nMultiple player positions in map", 1);
-	data->player.posY = j + 0.5;
-	data->player.posX = i + 0.5;
+	data->player.pos_y = j + 0.5;
+	data->player.pos_x = i + 0.5;
 	data->direction = data->map[i][j];
 	*player_found = 1;
 }
