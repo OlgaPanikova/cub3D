@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:40:51 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/04 14:20:03 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:23:02 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,11 @@ void	side_of_the_wall(t_cub *data)
 void	calculate_wall_rendering(t_cub *data)
 {
 	if (data->ray.side == 0)
-		data->ray.perp_wall_dist = (data->ray.side_dist_x - data->ray.delta_dist_x);
+		data->ray.perp_wall_dist = (data->ray.side_dist_x
+				- data->ray.delta_dist_x);
 	else
-		data->ray.perp_wall_dist = (data->ray.side_dist_y - data->ray.delta_dist_y);
+		data->ray.perp_wall_dist = (data->ray.side_dist_y
+				- data->ray.delta_dist_y);
 	data->lineheight = (int)(data->hight_screen / data->ray.perp_wall_dist);
 	data->drawstart = -data->lineheight / 2 + data->hight_screen / 2;
 	if (data->drawstart < 0)

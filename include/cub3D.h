@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 14:20:21 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:24:05 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ typedef struct s_cub
 	t_texture		*image;
 	t_texture		*wallt;
 }	t_cub;
-
 
 char		*get_next_line(int fd);
 
