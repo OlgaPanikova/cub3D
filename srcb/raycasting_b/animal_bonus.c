@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animal_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/04 17:01:37 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/04 18:53:22 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/04 19:00:36 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	render_player(t_cub *data)
 	int		x;
 	int		y;
 
-	x = 580;
-	y = 557;
+	x = data->wight_screen * 0.5;
+	y = data->hight_screen * 0.82;
 	current_sprite = data->sprites[data->sprite_index];
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, current_sprite, x, y);
 }

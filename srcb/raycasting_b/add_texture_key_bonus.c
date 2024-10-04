@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 17:47:39 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/04 18:08:58 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/04 19:00:46 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	key_hook(int keycode, void *param)
 	t_cub	*data;
 
 	data = (t_cub *)param;
+	data->is_moving = 0;
 	if (keycode == 53)
 	{
 		close_window(data);
