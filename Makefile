@@ -1,7 +1,7 @@
 NAME = cub3D
 NAMEB = cub3D_bonus
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 LIBFT = ./LIBFT/libft.a
 
 SRC_DIR = ./src

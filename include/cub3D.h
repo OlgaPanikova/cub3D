@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/05 15:56:01 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/05 19:17:35 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int			open_file(t_cub *data, const char *file);
 
 int			parse_lines(t_cub *data, int fd);
 void		check_after_map(int fd, t_cub *data);
+int			check_elements_completed(t_cub *data);
 
 int			parse_color(t_cub *data, int *color, char *line);
 int			parse_texture(t_cub *data, char **dest, char *line,

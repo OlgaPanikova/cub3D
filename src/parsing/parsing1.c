@@ -6,11 +6,20 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 19:22:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 12:36:29 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/05 19:16:45 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+
+int	check_elements_completed(t_cub *data)
+{
+	if (data->north_texture && data->south_texture && data->west_texture
+		&& data->east_texture && data->floor_color[0] != -1
+		&& data->ceiling_color[0] != -1)
+		return (1);
+	return (0);
+}
 
 void	check_after_map(int fd, t_cub *data)
 {

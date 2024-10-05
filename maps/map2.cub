@@ -4,10 +4,9 @@ SO ./textures/short_way.xpm
 WE ./textures/olga_misha.xpm
 EA ./textures/green_team.xpm
 
-
-
-F 181, 184, 177
+F 181, 184, 0
 C 0, 128, 255
+
 
         1111111111111111111111111
         1000000000110000000000001

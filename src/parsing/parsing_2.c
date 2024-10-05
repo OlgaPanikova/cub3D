@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 19:36:33 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 12:40:56 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/05 19:10:06 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ int	parse_color(t_cub *data, int *color, char *line)
 		line = skip_spaces(line);
 		i++;
 	}
+	if (*line != '\0' && *line != '\n')
+		ft_exit(data, "Error\nExtra comma or color value", 1);
 	return (0);
 }
 

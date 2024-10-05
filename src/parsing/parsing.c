@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 21:18:05 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/05 15:43:31 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/05 19:25:15 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	parse_color_line(t_cub *data, char *line)
 	line = skip_spaces(line);
 	if (line[0] == 'F')
 	{
+		if (data->floor_color[0] != -1)
+			ft_exit(data, "Error\nDuplicate floor color", 1);
 		line++;
 		if (parse_color(data, data->floor_color, line) != 0)
 			return (ft_print_error("Invalid floor color\n", 1));
@@ -24,6 +26,8 @@ int	parse_color_line(t_cub *data, char *line)
 	}
 	else if (line[0] == 'C')
 	{
+		if (data->ceiling_color[0] != -1)
+			ft_exit(data, "Error\nDuplicate ceiling color", 1);
 		line++;
 		if (parse_color(data, data->ceiling_color, line) != 0)
 			return (ft_print_error("Invalid ceiling color\n", 1));
@@ -32,26 +36,27 @@ int	parse_color_line(t_cub *data, char *line)
 	return (1);
 }
 
+void	handle_texture(t_cub *data, char **texture, char *line,
+		const char *identifier)
+{
+	if (*texture)
+		ft_exit(data, "Error\nDuplicate texture", 1);
+	parse_texture(data, texture, line, identifier);
+}
+
 int	parse_texture_line(t_cub *data, char *line)
 {
 	line = skip_spaces(line);
 	if (ft_strncmp(line, "NO", 2) == 0)
-		return (parse_texture(data, &data->north_texture, line, "NO"));
+		handle_texture(data, &data->north_texture, line, "NO");
 	else if (ft_strncmp(line, "SO", 2) == 0)
-		return (parse_texture(data, &data->south_texture, line, "SO"));
+		handle_texture(data, &data->south_texture, line, "SO");
 	else if (ft_strncmp(line, "WE", 2) == 0)
-		return (parse_texture(data, &data->west_texture, line, "WE"));
+		handle_texture(data, &data->west_texture, line, "WE");
 	else if (ft_strncmp(line, "EA", 2) == 0)
-		return (parse_texture(data, &data->east_texture, line, "EA"));
-	return (-1);
-}
-
-int	check_elements_completed(t_cub *data)
-{
-	if (data->north_texture && data->south_texture && data->west_texture
-		&& data->east_texture && data->floor_color[0] != -1
-		&& data->ceiling_color[0] != -1)
-		return (1);
+		handle_texture(data, &data->east_texture, line, "EA");
+	else
+		return (-1);
 	return (0);
 }
 
@@ -100,7 +105,7 @@ int	parsing_args(t_cub *data, const char *file)
 	if (check_texture_files(data) != 0)
 		return (1);
 	if (data->map)
-		check_map(data, fd);
+		check_map(data);
 	else
 		ft_exit(data, "Error\ngame map is missing", 1);
 	check_walls(data, 0, 0);
