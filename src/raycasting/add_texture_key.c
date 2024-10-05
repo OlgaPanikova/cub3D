@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_texture_key.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 17:47:39 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/04 12:59:13 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/05 15:57:58 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	close_window(void *param)
 	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		free_data(data);
-		system ("leaks cub3D");
 		exit(0);
 	}
 	return (1);

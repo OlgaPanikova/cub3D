@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 19:01:54 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/05 15:56:01 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ typedef struct s_cub
 	int				is_moving;
 	int				sprite_width;
 	int				sprite_height;
+	int				fd;
 }	t_cub;
 
 char		*get_next_line(int fd);
@@ -199,5 +200,8 @@ void		free_textures_on_error(t_cub *data);
 void		render_player(t_cub *data);
 void		update_player_animation(t_cub *data);
 void		load_player_sprites(t_cub *data);
+
+int			mouse_move(int x, int y, t_cub *data);
+void		free_mlx(t_cub *data);
 
 #endif

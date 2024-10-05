@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 21:18:05 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 15:30:31 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/05 15:43:31 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	parsing_args(t_cub *data, const char *file)
 	if (check_texture_files(data) != 0)
 		return (1);
 	if (data->map)
-		check_map(data);
+		check_map(data, fd);
 	else
 		ft_exit(data, "Error\ngame map is missing", 1);
 	check_walls(data, 0, 0);

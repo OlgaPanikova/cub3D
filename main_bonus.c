@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:07:22 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 18:01:07 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/05 18:20:42 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_mlx(t_cub *data)
 	mlx_ptr = mlx_init();
 	if (!mlx_ptr)
 		ft_exit(data, "Error\n Failed to initialize MiniLibX\n", 1);
-	win_ptr = mlx_new_window(mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "Raycaster");
+	win_ptr = mlx_new_window(mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D_b");
 	if (!win_ptr)
 	{
 		ft_exit(data, "Error\n Failed to initialize MiniLibX\n", 1);
@@ -34,6 +34,16 @@ void	init_hand(t_cub *data)
 	data->hand1 = "./textures/hand1.xpm";
 	data->hand2 = "./textures/hand2.xpm";
 	data->is_moving = 1;
+}
+
+void	init_data2(t_cub *data)
+{
+	data->wight_screen = SCREEN_WIDTH;
+	data->hight_screen = SCREEN_HEIGHT;
+	data->n = NULL;
+	data->w = NULL;
+	data->s = NULL;
+	data->e = NULL;
 }
 
 void	init_data(t_cub *data)
@@ -61,20 +71,7 @@ void	init_data(t_cub *data)
 	data->map = NULL;
 	data->map_width = 0;
 	data->map_height = 0;
-	data->wight_screen = SCREEN_WIDTH;
-	data->hight_screen = SCREEN_HEIGHT;
-}
-
-int	mouse_move(int x, int y, t_cub *data)
-{
-	mlx_mouse_hide();
-	mlx_mouse_get_pos(data->win_ptr, &x, &y);
-	if (x > data->wight_screen / 2)
-		key_hook(124, data);
-	if (x < data->wight_screen / 2)
-		key_hook(123, data);
-	mlx_mouse_move(data->win_ptr, data->wight_screen / 2, y / 2);
-	return (0);
+	init_data2(data);
 }
 
 int	main(int args, char **argv)
@@ -85,14 +82,19 @@ int	main(int args, char **argv)
 	if (!data)
 		return (ft_print_error("Failed to allocate memory\n", 1));
 	if (args != 2)
-		return (ft_print_error("Error arguments\n", 1));
+	{
+		free(data);
+		printf("Error arguments\n");
+		system("leaks cub3D");
+		exit(1);
+	}
 	if (!check_file_extension(argv[1]))
-		return (ft_print_error("Error: File must have a .cub extension\n", 1));
+		ft_exit(data, "Error\nFile must have a .cub extension", 1);
 	init_data(data);
-	init_mlx(data);
 	if (parsing_args(data, argv[1]) != 0)
 		return (free_data(data), 1);
 	rgb_to_hex(data);
+	init_mlx(data);
 	init_texture(data);
 	init_hand(data);
 	calculations_camera(data, data->direction);

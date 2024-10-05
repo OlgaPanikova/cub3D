@@ -6,11 +6,23 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 18:26:26 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/04 18:20:57 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/05 15:36:50 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+
+int	mouse_move(int x, int y, t_cub *data)
+{
+	mlx_mouse_hide();
+	mlx_mouse_get_pos(data->win_ptr, &x, &y);
+	if (x > data->wight_screen / 2)
+		key_hook(124, data);
+	if (x < data->wight_screen / 2)
+		key_hook(123, data);
+	mlx_mouse_move(data->win_ptr, data->wight_screen / 2, y / 2);
+	return (0);
+}
 
 void	calculate_ray_direction(t_cub *data, int x)
 {

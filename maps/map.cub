@@ -1,8 +1,8 @@
 
-NO ./textures/north_texture.xpm
-SO ./textures/south_texture.xpm
-WE ./textures/west_texture.xpm
-EA ./textures/east_texture.xpm
+NO ./textures/sport.xpm
+SO ./textures/short_way.xpm
+WE ./textures/olga_misha.xpm
+EA ./textures/green_team.xpm
 
 F 181, 184, 177
 C 0, 128, 255
@@ -11,8 +11,8 @@ C 0, 128, 255
 11111111111111111111
 10000000000000000001
 10000000000000001111
-10000N00000000000001
 10000000000000000001
+10000000N00000000001
 10000111000000000001
 10000000000000000001
 11111000000000000001

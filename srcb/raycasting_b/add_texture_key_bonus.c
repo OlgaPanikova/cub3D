@@ -6,7 +6,7 @@
 /*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 17:47:39 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/04 19:00:46 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/05 15:58:01 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	close_window(void *param)
 	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		free_data(data);
-		system ("leaks cub3D");
 		exit(0);
 	}
 	return (1);
