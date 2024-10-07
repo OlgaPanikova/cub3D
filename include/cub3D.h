@@ -6,7 +6,7 @@
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/05 19:17:35 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/07 21:25:28 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int			process_line(t_cub *data, char *line, int *is_map_parsing,
 				int *elements_completed);
 int			parsing_args(t_cub *data, const char *file);
 int			open_file(t_cub *data, const char *file);
+int			check_arguments(int args, char **argv, t_cub *data);
 
 int			parse_lines(t_cub *data, int fd);
 void		check_after_map(int fd, t_cub *data);

@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   utils2_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/29 19:05:57 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/09/29 19:10:21 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/07 21:24:38 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+
+int	check_arguments(int args, char **argv, t_cub *data)
+{
+	if (args != 2)
+	{
+		free(data);
+		return (ft_print_error("Error arguments\n", 1));
+	}
+	if (!check_file_extension(argv[1]))
+	{
+		free(data);
+		return (ft_print_error("Error\nFile must have a .cub extension\n", 1));
+	}
+	return (0);
+}
 
 int	open_file(t_cub *data, const char *file)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:07:22 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/05 18:20:42 by opanikov         ###   ########.fr       */
+/*   Updated: 2024/10/07 21:25:46 by mgreshne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	init_hand(t_cub *data)
 {
 	data->hand1 = "./textures/hand1.xpm";
 	data->hand2 = "./textures/hand2.xpm";
-	data->is_moving = 1;
+	data->is_moving = 0;
 }
 
 void	init_data2(t_cub *data)
@@ -81,15 +81,8 @@ int	main(int args, char **argv)
 	data = malloc(sizeof(t_cub));
 	if (!data)
 		return (ft_print_error("Failed to allocate memory\n", 1));
-	if (args != 2)
-	{
-		free(data);
-		printf("Error arguments\n");
-		system("leaks cub3D");
-		exit(1);
-	}
-	if (!check_file_extension(argv[1]))
-		ft_exit(data, "Error\nFile must have a .cub extension", 1);
+	if (check_arguments(args, argv, data) != 0)
+		return (1);
 	init_data(data);
 	if (parsing_args(data, argv[1]) != 0)
 		return (free_data(data), 1);
