@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:33:32 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/07 21:25:28 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/08 18:48:35 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ typedef struct s_cub
 	t_texture		*e;
 	t_texture		*image;
 	t_texture		*wallt;
+	t_texture		*sprites1;
+	t_texture		*sprites2;
 	void			*sprites[2];
 	int				sprite_index;
 	int				anim_time;
@@ -204,6 +206,8 @@ void		update_player_animation(t_cub *data);
 void		load_player_sprites(t_cub *data);
 
 int			mouse_move(int x, int y, t_cub *data);
-void		free_mlx(t_cub *data);
+// void		free_mlx(t_cub *data);
+
+void		free_hand(t_cub *data);
 
 #endif

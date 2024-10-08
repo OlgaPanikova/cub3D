@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast.c                                          :+:      :+:    :+:   */
+/*   raycast_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/28 19:40:51 by opanikov          #+#    #+#             */
-/*   Updated: 2024/10/04 14:23:02 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/08 16:32:04 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,16 @@ void	side_of_the_wall(t_cub *data)
 	if (data->ray.side == 0)
 	{
 		if (data->ray.ray_dir_x > 0)
-			data->wallt = data->e;
+			data->wallt = data->s;
 		else
-			data->wallt = data->w;
+			data->wallt = data->n;
 	}
 	else
 	{
 		if (data->ray.ray_dir_y > 0)
-			data->wallt = data->n;
+			data->wallt = data->e;
 		else
-			data->wallt = data->s;
+			data->wallt = data->w;
 	}
 }
 

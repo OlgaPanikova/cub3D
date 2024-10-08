@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 22:07:22 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/07 21:25:46 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/08 19:40:49 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,24 @@ void	init_mlx(t_cub *data)
 	data->win_ptr = win_ptr;
 }
 
-void	init_hand(t_cub *data)
+int	init_hand(t_cub *data)
 {
+	if (open("./textures/hand1.xpm", O_RDONLY) == -1)
+	{
+		free_data(data);
+		return (1);
+	}
+	if (open("./textures/hand2.xpm", O_RDONLY) == -1)
+	{
+		free_data(data);
+		return (1);
+	}
 	data->hand1 = "./textures/hand1.xpm";
 	data->hand2 = "./textures/hand2.xpm";
 	data->is_moving = 0;
+	data->sprites[0] = NULL;
+	data->sprites[1] = NULL;
+	return (0);
 }
 
 void	init_data2(t_cub *data)
@@ -84,12 +97,13 @@ int	main(int args, char **argv)
 	if (check_arguments(args, argv, data) != 0)
 		return (1);
 	init_data(data);
+	if (init_hand(data) != 0)
+		return (ft_print_error("Error\nLoading player sprites\n", 1));
 	if (parsing_args(data, argv[1]) != 0)
 		return (free_data(data), 1);
 	rgb_to_hex(data);
 	init_mlx(data);
 	init_texture(data);
-	init_hand(data);
 	calculations_camera(data, data->direction);
 	load_player_sprites(data);
 	start_raycast(data);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory.c                                           :+:      :+:    :+:   */
+/*   memory_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgreshne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: opanikov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 21:28:16 by mgreshne          #+#    #+#             */
-/*   Updated: 2024/10/04 12:30:41 by mgreshne         ###   ########.fr       */
+/*   Updated: 2024/10/08 19:29:29 by opanikov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,18 @@ void	free_textures_on_error(t_cub *data)
 		free(data->e);
 }
 
+void	free_hand(t_cub *data)
+{
+	if (data->sprites[0])
+	{
+		mlx_destroy_image(data->mlx_ptr, data->sprites[0]);
+	}
+	if (data->sprites[1])
+	{
+		mlx_destroy_image(data->mlx_ptr, data->sprites[1]);
+	}
+}
+
 void	free_data(t_cub *data)
 {
 	int	i;
@@ -45,6 +57,7 @@ void	free_data(t_cub *data)
 	if (data->east_texture)
 		free(data->east_texture);
 	free_textures_on_error(data);
+	free_hand(data);
 	if (data->map)
 	{
 		i = 0;
